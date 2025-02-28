@@ -432,13 +432,7 @@ const BlogPost = () => {
   );
 };
 
-export default BlogPost;
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
-import { useParams, Link } from 'react-router-dom';
-import { Calendar, User, Tag, ArrowLeft, MessageCircle } from 'lucide-react';
-import { toastService } from '../components/ToastContainer';
-import { sendEmail } from '../utils/emailService';
+export default BlogPost;ce';
 
 // Mock data for blog posts
 const blogPosts = [
