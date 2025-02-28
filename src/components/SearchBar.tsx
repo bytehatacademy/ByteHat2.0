@@ -7,20 +7,20 @@ interface SearchBarProps {
   onItemClick?: () => void;
 }
 
-// Mock data structure - you would normally fetch this from an API
-const mockSearchData = {
-  courses: [
-    { title: 'Ethical Hacking', url: '/courses#ethical-hacking' },
-    { title: 'Defensive Security/SOC', url: '/courses#defensive-security' },
-    { title: 'Cloud Security', url: '/courses#cloud-security' },
-    { title: 'DevSecOps', url: '/courses#devsecops' },
-  ],
-  blogs: [
-    { title: 'Top 5 Cloud Security Tips for 2025', url: '/blog/cloud-security-tips' },
-    { title: 'Why Learn Ethical Hacking in 2025', url: '/blog/ethical-hacking' },
-    { title: 'DevSecOps: The Future of Secure Development', url: '/blog/devsecops-future' },
-    { title: 'AI in Cybersecurity: Trends to Watch', url: '/blog/ai-cybersecurity-trends' },
-  ],
+// Import blog posts and courses from their respective pages
+import { blogPosts } from '../pages/Blog';
+import { courses } from '../pages/Courses';
+
+// Process data for search
+const searchData = {
+  courses: courses.map(course => ({
+    title: course.title,
+    url: `/courses#${course.title.toLowerCase().replace(/\s+/g, '-')}`
+  })),
+  blogs: blogPosts.map(post => ({
+    title: post.title,
+    url: `https://medium.com/bytehatacademy/${post.slug}`
+  })),
 };
 
 const SearchBar: React.FC<SearchBarProps> = ({ onItemClick }) => {
@@ -53,13 +53,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ onItemClick }) => {
     setLoading(true);
     setIsOpen(true);
 
-    // Simulate API call with setTimeout
+    // Perform real search
     const timer = setTimeout(() => {
-      const filteredCourses = mockSearchData.courses.filter(course =>
+      const filteredCourses = searchData.courses.filter(course =>
         course.title.toLowerCase().includes(query.toLowerCase())
       );
       
-      const filteredBlogs = mockSearchData.blogs.filter(blog =>
+      const filteredBlogs = searchData.blogs.filter(blog =>
         blog.title.toLowerCase().includes(query.toLowerCase())
       );
 
@@ -87,16 +87,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onItemClick }) => {
       // For courses, navigate to courses page and trigger the corresponding modal
       const courseId = url.split('#')[1];
       navigate('/courses', { state: { openCourse: courseId } });
-    } else if (url.startsWith('/blog/')) {
-      // For blog posts, navigate to the specific blog post
-      // Ensure we reset the query and close dropdown before navigation
-      setQuery('');
-      setIsOpen(false);
-      
-      // Wait a tiny bit to ensure state updates happen before navigation
-      setTimeout(() => {
-        navigate(url);
-      }, 10);
+    } else if (url.startsWith('https://medium.com/')) {
+      // For blog posts, open Medium in a new tab
+      window.open(url, '_blank', 'noopener,noreferrer');
     } else {
       // Default navigation
       navigate(url);

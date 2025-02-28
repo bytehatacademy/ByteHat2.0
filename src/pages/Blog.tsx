@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Calendar, User, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const blogPosts = [
+export const blogPosts = [
   {
     title: 'Top 5 Cloud Security Tips for 2025',
     excerpt:
@@ -100,13 +100,15 @@ const Blog = () => {
                       <User className="h-4 w-4 mr-1" />
                       {post.author}
                     </div>
-                    <Link 
-                      to={`/blog/${post.slug}`} 
+                    <a 
+                      href={`https://medium.com/bytehatacademy/${post.slug}`} 
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="flex items-center text-accent hover:text-accent/80 transition-colors"
                     >
                       Read More
                       <ArrowRight className="h-4 w-4 ml-1" />
-                    </Link>
+                    </a>
                   </div>
                 </div>
               </article>

@@ -93,6 +93,42 @@ html.light button.text-gray-300 {
   @apply text-gray-700 hover:text-teal-600;
 }
 
+/* Fix Home sections in light mode */
+html.light section.bg-gray-900 {
+  @apply bg-white;
+}
+
+html.light section.bg-gray-800 {
+  @apply bg-gray-50;
+}
+
+/* Ready to Start Your Journey section */
+html.light div.bg-gray-800 {
+  @apply bg-white;
+}
+
+/* Fix text contrast in light mode */
+html.light h2.text-white {
+  @apply text-gray-900;
+}
+
+html.light p.text-white {
+  @apply text-gray-700;
+}
+
+/* Feature blocks in light mode */
+html.light .feature-block {
+  @apply bg-white shadow-md border border-gray-200;
+}
+
+html.light .feature-block h3 {
+  @apply text-gray-900;
+}
+
+html.light .feature-block p {
+  @apply text-gray-700;
+}
+
 /* Enhanced light mode styling for specific sections */
 html.light section h2.text-3xl,
 html.light section h2.text-4xl {
@@ -139,4 +175,55 @@ html.light .btn-primary {
 
 html.light .btn-secondary {
   @apply border-teal-600 text-teal-600 hover:bg-teal-600;
+}
+
+/* Additional fixes for specific homepage sections */
+html.light .hero-section h1,
+html.light .hero-section p {
+  @apply text-gray-900;
+}
+
+html.light .testimonial-section {
+  @apply bg-white;
+}
+
+html.light .testimonial-section h2 {
+  @apply text-gray-900;
+}
+
+html.light .testimonial-section p {
+  @apply text-gray-700;
+}
+
+html.light .testimonial-card {
+  @apply bg-gray-50 shadow-sm border border-gray-200;
+}
+
+html.light .testimonial-card p {
+  @apply text-gray-800;
+}
+
+html.light .stat-card {
+  @apply bg-white border border-gray-200 shadow-sm;
+}
+
+html.light .stat-card h3 {
+  @apply text-gray-900;
+}
+
+html.light .stat-card p {
+  @apply text-gray-700;
+}
+
+/* Fix CTA section in light mode */
+html.light .cta-section {
+  @apply bg-gray-50;
+}
+
+html.light .cta-section h2 {
+  @apply text-gray-900;
+}
+
+html.light .cta-section p {
+  @apply text-gray-700;
 }

@@ -14,7 +14,7 @@ interface Course {
   image?: string;
 }
 
-const courses: Course[] = [
+export const courses: Course[] = [
   {
     icon: <Shield className="h-12 w-12 text-accent" />,
     title: 'Ethical Hacking',
