@@ -119,11 +119,11 @@ html.light div.bg-gray-800 {
 }
 
 /* Fix text contrast in light mode */
-html.light h2.text-white {
+html.light h2[class*="text-white"] {
   @apply text-gray-900;
 }
 
-html.light p.text-white {
+html.light p[class*="text-white"] {
   @apply text-gray-700;
 }
 
