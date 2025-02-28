@@ -65,9 +65,6 @@ const Contact = () => {
                   } catch (error) {
                     console.error('Error sending email:', error);
                     toastService.show('Failed to send message. Please try again later.', 'error');
-                    
-                    // Show only the error toast without fallback
-                    toastService.show('Failed to send message. Please try again later.', 'error');
                   }
                 }}
               >

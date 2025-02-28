@@ -56,6 +56,11 @@ html.light div.bg-gray-900 {
   @apply bg-gray-50;
 }
 
+html.light h1.text-4xl,
+html.light h1.text-5xl {
+  @apply text-gray-900;
+}
+
 html.light div.text-gray-400,
 html.light p.text-gray-400,
 html.light span.text-gray-400 {
@@ -79,9 +84,23 @@ html.light nav {
   @apply text-gray-800;
 }
 
+html.light header.nav-blur {
+  @apply shadow-md;
+}
+
 html.light a.text-gray-300,
 html.light button.text-gray-300 {
   @apply text-gray-700 hover:text-teal-600;
+}
+
+/* Enhanced light mode styling for specific sections */
+html.light section h2.text-3xl,
+html.light section h2.text-4xl {
+  @apply text-gray-900;
+}
+
+html.light section p.text-xl {
+  @apply text-gray-700;
 }
 
 /* Light mode search bar */

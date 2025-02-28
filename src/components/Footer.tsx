@@ -117,8 +117,8 @@ const Footer = () => {
                   toastService.show('Message sent! We will get back to you soon.', 'success');
                   e.currentTarget.reset();
                 } catch (error) {
-                  toastService.show('Failed to send message. Please try again later.', 'error');
                   console.error('Error sending email:', error);
+                  toastService.show('Failed to send message. Please try again later.', 'error');
                 }
               }}
             >

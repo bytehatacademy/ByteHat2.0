@@ -16,28 +16,16 @@ export const initEmailJS = () => {
 
 export const sendEmail = async (params: EmailParams) => {
   try {
-    // Check if EmailJS is properly initialized
-    if (!emailjs.init) {
-      // Re-initialize if needed
-      initEmailJS();
-    }
+    // For demo purposes only
+    console.log("Demo: Email would be sent with params:", params);
     
-    // For demo purposes, we'll simulate a successful send
-    // In production, uncomment the actual emailjs.send code
-    /*
-    const response = await emailjs.send(
-      'service_bytehat', // Replace with your EmailJS service ID
-      'template_bytehat', // Replace with your EmailJS template ID
-      params
-    );
-    return response;
-    */
+    // Simulate successful email sending for demo
+    await new Promise(resolve => setTimeout(resolve, 500));
     
-    // For demo, return success without showing any console messages
+    // Return success for demo environment
     return { status: 200, text: 'Demo: Email sent successfully' };
   } catch (error) {
-    // Only log the error, but don't show any additional toasts as the components will handle this
-    console.error('Email error:', error);
+    console.error('Email service error:', error);
     throw error; // Rethrow to let components handle the error
   }
 };

@@ -131,20 +131,31 @@ const BlogPost = () => {
   const [notFoundShown, setNotFoundShown] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
+    
     // Find the blog post that matches the slug
-    const foundPost = blogPosts.find((post) => post.slug === slug);
+    // First try exact match
+    let foundPost = blogPosts.find((post) => post.slug === slug);
+    
+    // If not found, check if the slug might be the title slugified from search results
+    if (!foundPost && slug) {
+      foundPost = blogPosts.find((post) => 
+        post.title.toLowerCase().replace(/\s+/g, '-').includes(slug.toLowerCase())
+      );
+    }
 
     // Simulate API delay
     setTimeout(() => {
       if (foundPost) {
         setPost(foundPost);
+        setNotFoundShown(false);
       } else if (!notFoundShown) {
         toastService.show('Blog post not found', 'error');
         setNotFoundShown(true);
       }
       setLoading(false);
     }, 300);
-  }, [slug, notFoundShown]);
+  }, [slug]);
 
   if (loading) {
     return (
@@ -214,12 +225,6 @@ const BlogPost = () => {
               <Tag className="h-4 w-4 mr-1" />
               {post.category}
             </div>
-            {post.comments && (
-              <div className="flex items-center">
-                <MessageCircle className="h-4 w-4 mr-1" />
-                {post.comments} Comments
-              </div>
-            )}
           </div>
 
           <div

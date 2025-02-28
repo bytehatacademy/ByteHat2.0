@@ -89,7 +89,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ onItemClick }) => {
       navigate('/courses', { state: { openCourse: courseId } });
     } else if (url.startsWith('/blog/')) {
       // For blog posts, navigate to the specific blog post
-      navigate(url);
+      // Ensure we reset the query and close dropdown before navigation
+      setQuery('');
+      setIsOpen(false);
+      
+      // Wait a tiny bit to ensure state updates happen before navigation
+      setTimeout(() => {
+        navigate(url);
+      }, 10);
     } else {
       // Default navigation
       navigate(url);
