@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { sendEmail } from '../utils/emailService';
+import { toastService } from './ToastContainer';
 
 interface CourseModalProps {
   course: {
@@ -28,9 +29,11 @@ const CourseModal: React.FC<CourseModalProps> = ({ course, onClose }) => {
         message: `Enrollment request for ${course.title}`,
         reply_to: email,
       });
+      toastService.show('Thank you for your interest! We will contact you soon.', 'success');
       setMessage('Thank you for your interest! We will contact you soon.');
       setEmail('');
     } catch (error) {
+      toastService.show('Something went wrong. Please try again later.', 'error');
       setMessage('Something went wrong. Please try again later.');
     }
     setIsEnrolling(false);

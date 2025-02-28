@@ -1,3 +1,4 @@
+
 import emailjs from '@emailjs/browser';
 
 interface EmailParams {
@@ -7,13 +8,17 @@ interface EmailParams {
   reply_to: string;
 }
 
+// Initialize EmailJS - you should call this once when your app starts
+export const initEmailJS = () => {
+  emailjs.init('YOUR_PUBLIC_KEY'); // Replace with your actual public key
+};
+
 export const sendEmail = async (params: EmailParams) => {
   try {
     const response = await emailjs.send(
-      'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
-      'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
-      params,
-      'YOUR_PUBLIC_KEY' // Replace with your EmailJS public key
+      'service_bytehat', // Replace with your EmailJS service ID
+      'template_bytehat', // Replace with your EmailJS template ID
+      params
     );
     return response;
   } catch (error) {

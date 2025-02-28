@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Twitter, Linkedin, Mail, Instagram } from 'lucide-react';
+import { sendEmail } from '../utils/emailService';
+import { toastService } from './ToastContainer';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -92,25 +94,51 @@ const Footer = () => {
             <p className="text-sm mb-4">
               Have a question? Send us a quick message.
             </p>
-            <form className="flex flex-col space-y-2">
+            <form 
+              className="flex flex-col space-y-2"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.currentTarget);
+                const email = formData.get('email') as string;
+                const message = formData.get('message') as string;
+                
+                if (!email || !message) {
+                  toastService.show('Please fill in all fields', 'warning');
+                  return;
+                }
+                
+                try {
+                  await sendEmail({
+                    to_email: 'bytehatacademy@gmail.com',
+                    from_name: email,
+                    message: message,
+                    reply_to: email,
+                  });
+                  toastService.show('Message sent! We will get back to you soon.', 'success');
+                  e.currentTarget.reset();
+                } catch (error) {
+                  toastService.show('Failed to send message. Please try again later.', 'error');
+                  console.error('Error sending email:', error);
+                }
+              }}
+            >
               <input
                 type="email"
+                name="email"
                 placeholder="Your email"
                 className="bg-gray-800 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                required
               />
               <textarea
+                name="message"
                 placeholder="Your message"
                 rows={3}
                 className="bg-gray-800 text-white px-4 py-2 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-accent"
+                required
               ></textarea>
               <button 
                 type="submit" 
                 className="btn-primary"
-                onClick={(e) => {
-                  e.preventDefault();
-                  alert('Message sent! We will get back to you soon.');
-                  // In a real app, you would submit this to your backend
-                }}
               >
                 Send Message
               </button>

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import { toastService } from '../components/ToastContainer';
+import { sendEmail } from '../utils/emailService';
 
 const Contact = () => {
   return (
@@ -49,17 +51,29 @@ const Contact = () => {
                   // Here we're simulating the email being sent
                   console.log('Sending email:', { name, email, message });
                   
-                  // Create a mailto: link as a fallback
-                  const subject = `Contact from ByteHat Academy - ${name}`;
-                  const body = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
-                  const mailtoUrl = `mailto:bytehatacademy@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-                  
-                  // Offer to open email client
-                  if (window.confirm('Thank you for your message! Would you like to open your email client to send this message directly?')) {
-                    window.location.href = mailtoUrl;
-                  } else {
-                    alert('Message received! We will get back to you soon.');
+                  try {
+                    // Send email via EmailJS
+                    await sendEmail({
+                      to_email: 'bytehatacademy@gmail.com',
+                      from_name: name,
+                      message: message,
+                      reply_to: email,
+                    });
+                    
+                    toastService.show('Message sent successfully! We will get back to you soon.', 'success');
                     e.currentTarget.reset();
+                  } catch (error) {
+                    console.error('Error sending email:', error);
+                    toastService.show('Failed to send message. Please try again later.', 'error');
+                    
+                    // Fallback to mailto
+                    const subject = `Contact from ByteHat Academy - ${name}`;
+                    const body = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
+                    const mailtoUrl = `mailto:bytehatacademy@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                    
+                    if (window.confirm('Could not send message automatically. Would you like to open your email client instead?')) {
+                      window.location.href = mailtoUrl;
+                    }
                   }
                 }}
               >
