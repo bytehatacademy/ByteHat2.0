@@ -98,7 +98,8 @@ const Footer = () => {
               className="flex flex-col space-y-2"
               onSubmit={async (e) => {
                 e.preventDefault();
-                const formData = new FormData(e.currentTarget);
+                const form = e.currentTarget; // Capture the form element
+                const formData = new FormData(form);
                 const email = formData.get('email') as string;
                 const message = formData.get('message') as string;
                 
@@ -115,7 +116,7 @@ const Footer = () => {
                     reply_to: email,
                   });
                   toastService.show('Message sent! We will get back to you soon.', 'success');
-                  e.currentTarget.reset();
+                  form.reset(); // Use the captured form reference
                 } catch (error) {
                   console.error('Error sending email:', error);
                   toastService.show('Failed to send message. Please try again later.', 'error');

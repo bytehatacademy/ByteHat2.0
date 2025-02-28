@@ -7,6 +7,7 @@ import { sendEmail } from '../utils/emailService';
 const Contact = () => {
   return (
     <>
+      {/* SEO Metadata */}
       <Helmet>
         <title>Contact Us | ByteHat Academy</title>
         <meta
@@ -19,6 +20,7 @@ const Contact = () => {
         />
       </Helmet>
 
+      {/* Main Contact Section */}
       <div className="pt-20 pb-16 bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -32,49 +34,47 @@ const Contact = () => {
             {/* Contact Form */}
             <div className="card">
               <h2 className="text-2xl font-bold mb-6">Send us a message</h2>
-              <form 
+              <form
                 className="space-y-6"
                 onSubmit={async (e) => {
                   e.preventDefault();
-                  const formData = new FormData(e.currentTarget);
+
+                  // Capture the form element
+                  const form = e.currentTarget;
+                  const formData = new FormData(form);
                   const name = formData.get('name') as string;
                   const email = formData.get('email') as string;
                   const message = formData.get('message') as string;
                   const csrfToken = formData.get('csrf_token') as string;
-                  
-                  // Enhanced validation
+
+                  // Validation
                   const errors = [];
                   if (!name || name.trim().length < 2) {
                     errors.push('Please enter a valid name (minimum 2 characters)');
                   }
-                  
                   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
                     errors.push('Please enter a valid email address');
                   }
-                  
                   if (!message || message.trim().length < 10) {
                     errors.push('Please enter a detailed message (minimum 10 characters)');
                   }
-                  
-                  // CSRF validation
                   if (!csrfToken || csrfToken !== sessionStorage.getItem('csrf_token')) {
                     errors.push('Security validation failed. Please refresh the page and try again.');
                   }
-                  
                   if (errors.length > 0) {
                     toastService.show(errors[0], 'warning');
                     return;
                   }
 
                   try {
-                    // Implement rate limiting (simple version)
+                    // Rate limiting
                     const lastSubmission = localStorage.getItem('last_form_submission');
                     const now = Date.now();
                     if (lastSubmission && now - parseInt(lastSubmission) < 60000) {
                       toastService.show('Please wait a minute before sending another message', 'warning');
                       return;
                     }
-                    
+
                     // Send email via EmailJS
                     await sendEmail({
                       to_email: 'bytehatacademy@gmail.com',
@@ -82,16 +82,20 @@ const Contact = () => {
                       message: message,
                       reply_to: email,
                     });
-                    
-                    // Store submission time for rate limiting
+
+                    // Update submission time for rate limiting
                     localStorage.setItem('last_form_submission', now.toString());
-                    
+
                     // Refresh CSRF token
-                    const newToken = Array(32).fill(0).map(() => Math.random().toString(36).charAt(2)).join('');
+                    const newToken = Array(32)
+                      .fill(0)
+                      .map(() => Math.random().toString(36).charAt(2))
+                      .join('');
                     sessionStorage.setItem('csrf_token', newToken);
-                    
+
+                    // Success notification and form reset
                     toastService.show('Message sent successfully! We will get back to you soon.', 'success');
-                    e.currentTarget.reset();
+                    form.reset();
                   } catch (error) {
                     console.error('Error sending email:', error);
                     toastService.show('Failed to send message. Please try again later.', 'error');
@@ -146,9 +150,9 @@ const Contact = () => {
                     required
                   />
                 </div>
-                <input 
-                  type="hidden" 
-                  name="csrf_token" 
+                <input
+                  type="hidden"
+                  name="csrf_token"
                   value={sessionStorage.getItem('csrf_token') || ''}
                 />
                 <button type="submit" className="btn-primary w-full">
@@ -183,26 +187,20 @@ const Contact = () => {
                       <p className="text-gray-400">
                         Kerala, IN
                         <br />
-                        {/* San Francisco, CA 94105 */}
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
 
+              {/* Office Hours */}
               <div className="card">
                 <h2 className="text-2xl font-bold mb-6">Office Hours</h2>
                 <div className="space-y-2">
                   <p className="text-gray-400">
-                    <span className="font-medium text-white">
-                      Monday - Saturday:
-                    </span>{' '}
+                    <span className="font-medium text-white">Monday - Saturday:</span>{' '}
                     9:00 AM - 6:00 PM (IST)
                   </p>
-                  {/* <p className="text-gray-400">
-                    <span className="font-medium text-white">Saturday:</span> 10:00
-                    AM - 2:00 PM (IST)
-                  </p> */}
                   <p className="text-gray-400">
                     <span className="font-medium text-white">Sunday:</span> Closed
                   </p>

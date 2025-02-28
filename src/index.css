@@ -8,11 +8,11 @@
   html {
     font-family: 'Montserrat', sans-serif;
   }
-  
+
   html.dark {
     color-scheme: dark;
   }
-  
+
   html.light {
     color-scheme: light;
   }
@@ -58,7 +58,12 @@ html.light div.bg-gray-900 {
 
 html.light h1.text-4xl,
 html.light h1.text-5xl {
-  @apply text-gray-900;
+  @apply text-gray-800;
+}
+
+/* Keep the text color unchanged in light mode */
+html.light .no-change-text {
+  @apply text-white;
 }
 
 /* Keep hero section text white in light mode for better contrast with background image */
@@ -85,14 +90,14 @@ html.light span.text-gray-300 {
 }
 
 html.light div.bg-gray-800,
-html.light input.bg-gray-800, 
+html.light input.bg-gray-800,
 html.light textarea.bg-gray-800 {
   @apply bg-white border-gray-300;
 }
 
 html.light header,
 html.light nav {
-  @apply text-gray-800;
+  @apply text-white; /*text-gray-800*/
 }
 
 html.light header.nav-blur {
@@ -101,7 +106,7 @@ html.light header.nav-blur {
 
 html.light a.text-gray-300,
 html.light button.text-gray-300 {
-  @apply text-gray-700 hover:text-teal-600;
+  @apply text-white hover:text-teal-600;
 }
 
 /* Fix Home sections in light mode */
@@ -147,12 +152,12 @@ html.light section h2.text-4xl {
 }
 
 html.light section p.text-xl {
-  @apply text-gray-700;
+  @apply text-white;
 }
 
 /* Light mode search bar and navbar */
-html.light input.bg-gray-800.text-white {
-  @apply bg-white text-gray-800 border border-gray-300;
+html.light [class*=text-white] {
+  @apply text-gray-800;
 }
 
 html.light .bg-gray-800.border-gray-700 {
@@ -180,7 +185,7 @@ html.light .bg-gray-700 {
   @apply bg-gray-100;
 }
 
-html.light .text-white {
+html.light [class*=text-white] {
   @apply text-gray-800;
 }
 
@@ -188,7 +193,7 @@ html.light footer.bg-gray-900 {
   @apply bg-gray-100 text-gray-800;
 }
 
-html.light footer .text-white {
+html.light footer [class*=text-white] {
   @apply text-gray-800;
 }
 
