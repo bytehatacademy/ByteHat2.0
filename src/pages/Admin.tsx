@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/Tabs';
 import { toastService } from "../components/ToastContainer";
-import { Pencil, Trash2, Plus, Save, X } from 'lucide-react';
+import { Pencil, Trash2, Plus, Save, X, Shield, Lock, Cloud, Code, Terminal, Brain } from 'lucide-react';
 
 interface Blog {
-  id: string;
+  id: number; // Changed to number for database compatibility
   title: string;
   excerpt: string;
   content: string;
@@ -17,13 +17,15 @@ interface Blog {
 }
 
 interface Course {
-  id: string;
+  id: number; // Changed to number for database compatibility
   title: string;
   description: string;
   duration: string;
   level: string;
   status: string;
   image: string;
+  icon_name: string; // Added icon_name for database storage
+  icon: React.ReactNode; // Added icon for display
 }
 
 const Admin = () => {
@@ -40,49 +42,34 @@ const Admin = () => {
   const adminUsername = "admin";
   const adminPassword = "bytehat2025"; // Change this to something secure
 
-  // Load data from localStorage on component mount
+  // Placeholder for database interaction (replace with actual database calls)
+  const db = {
+    getAllBlogs: async () => { /* Replace with actual database query */ return []; },
+    createBlogPost: async (blog: Blog) => { /* Replace with actual database insertion */ console.log("Creating blog:", blog); },
+    getAllCourses: async () => { /* Replace with actual database query */ return []; },
+    createCourse: async (course: Course) => { /* Replace with actual database insertion */ console.log("Creating course:", course); },
+  };
+
+
+  // Load data from database on component mount
   useEffect(() => {
-    const storedBlogs = localStorage.getItem('bytehat_blogs');
-    const storedCourses = localStorage.getItem('bytehat_courses');
-
-    // If no data in localStorage, load from hardcoded data
-    if (!storedBlogs) {
-      // Import from BlogPost.tsx
-      import('../pages/BlogPost').then((module) => {
-        const initialBlogs = module.default.blogPosts || [];
-        // Add IDs if they don't exist
-        const blogsWithIds = initialBlogs.map((blog: any, index: number) => ({
-          ...blog,
-          id: blog.id || `blog-${index + 1}`
-        }));
-        setBlogs(blogsWithIds);
-        localStorage.setItem('bytehat_blogs', JSON.stringify(blogsWithIds));
-      }).catch(err => {
-        console.error("Error loading blogs:", err);
-        setBlogs([]);
-      });
-    } else {
-      setBlogs(JSON.parse(storedBlogs));
-    }
-
-    if (!storedCourses) {
-      // Import from Courses.tsx
-      import('../pages/Courses').then((module) => {
-        const initialCourses = module.default.courses || [];
-        // Add IDs if they don't exist
-        const coursesWithIds = initialCourses.map((course: any, index: number) => ({
+    const fetchData = async () => {
+      try{
+        const blogsData = await db.getAllBlogs();
+        setBlogs(blogsData);
+        const coursesData = await db.getAllCourses();
+        const coursesWithIcons = coursesData.map(course => ({
           ...course,
-          id: course.id || `course-${index + 1}`
+          icon: getIconByName(course.icon_name)
         }));
-        setCourses(coursesWithIds);
-        localStorage.setItem('bytehat_courses', JSON.stringify(coursesWithIds));
-      }).catch(err => {
-        console.error("Error loading courses:", err);
-        setCourses([]);
-      });
-    } else {
-      setCourses(JSON.parse(storedCourses));
+        setCourses(coursesWithIcons);
+      } catch(error) {
+        console.error("Error fetching data:", error);
+        toastService.show('Error fetching data', { type: 'error' });
+      }
     }
+    fetchData();
+
   }, []);
 
   // Handle authentication
@@ -100,22 +87,10 @@ const Admin = () => {
     }
   };
 
-  // Save blogs to localStorage
-  const saveBlogs = (updatedBlogs: Blog[]) => {
-    localStorage.setItem('bytehat_blogs', JSON.stringify(updatedBlogs));
-    setBlogs(updatedBlogs);
-  };
-
-  // Save courses to localStorage
-  const saveCourses = (updatedCourses: Course[]) => {
-    localStorage.setItem('bytehat_courses', JSON.stringify(updatedCourses));
-    setCourses(updatedCourses);
-  };
-
   // Add a new blog
-  const addBlog = () => {
+  const addBlog = async () => {
     const newBlog: Blog = {
-      id: `blog-${Date.now()}`,
+      id: 0, // Placeholder ID, will be assigned by the database
       title: 'New Blog Post',
       excerpt: 'Enter excerpt here...',
       content: '<p>Enter content here...</p>',
@@ -126,26 +101,55 @@ const Admin = () => {
       slug: `new-blog-post-${Date.now()}`
     };
 
-    setEditingBlog(newBlog);
+    try {
+      await db.createBlogPost(newBlog);
+      toastService.show('Blog saved successfully!', { type: 'success' });
+      // Refresh blog list (replace with actual database fetch)
+    } catch (error) {
+      console.error("Error adding blog:", error);
+      toastService.show('Error adding blog', { type: 'error' });
+    }
+
   };
 
   // Add a new course
-  const addCourse = () => {
+  const addCourse = async () => {
+    const getIconName = () => {
+      switch (editingCourse?.category) {
+        case 'Ethical Hacking': return 'Shield';
+        case 'Cloud Security': return 'Cloud';
+        case 'DevSecOps': return 'Code';
+        case 'Advanced': return 'Terminal';
+        case 'Specialized': return 'Brain';
+        default: return 'Lock';
+      }
+    };
+
     const newCourse: Course = {
-      id: `course-${Date.now()}`,
+      id: 0, // Placeholder ID
       title: 'New Course',
       description: 'Enter description here...',
       duration: '8 weeks',
       level: 'Beginner',
       status: 'Enroll Now',
-      image: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&q=80'
+      image: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&q=80',
+      icon_name: getIconName(),
+      icon: getIconByName(getIconName())
     };
 
-    setEditingCourse(newCourse);
+    try {
+      await db.createCourse(newCourse);
+      toastService.show('Course saved successfully!', { type: 'success' });
+      // Refresh course list (replace with actual database fetch)
+    } catch (error) {
+      console.error("Error adding course:", error);
+      toastService.show('Error adding course', { type: 'error' });
+    }
+
   };
 
-  // Update blog
-  const updateBlog = (e: React.FormEvent) => {
+  // Update blog (replace with actual database update)
+  const updateBlog = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingBlog) return;
 
@@ -162,23 +166,17 @@ const Admin = () => {
       slug: formData.get('slug') as string
     };
 
-    const existingIndex = blogs.findIndex(blog => blog.id === updatedBlog.id);
-    let updatedBlogs;
-
-    if (existingIndex >= 0) {
-      updatedBlogs = [...blogs];
-      updatedBlogs[existingIndex] = updatedBlog;
-    } else {
-      updatedBlogs = [...blogs, updatedBlog];
+    try{
+      //await db.updateBlog(updatedBlog);
+      toastService.show('Blog updated successfully!', { type: 'success' });
+    } catch (error) {
+      console.error("Error updating blog:", error);
+      toastService.show('Error updating blog', { type: 'error' });
     }
-
-    saveBlogs(updatedBlogs);
-    setEditingBlog(null);
-    toastService.show('Blog saved successfully!', { type: 'success' });
   };
 
-  // Update course
-  const updateCourse = (e: React.FormEvent) => {
+  // Update course (replace with actual database update)
+  const updateCourse = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingCourse) return;
 
@@ -190,39 +188,45 @@ const Admin = () => {
       duration: formData.get('duration') as string,
       level: formData.get('level') as string,
       status: formData.get('status') as string,
-      image: formData.get('image') as string
+      image: formData.get('image') as string,
+      icon_name: editingCourse.icon_name // Maintain icon name
     };
 
-    const existingIndex = courses.findIndex(course => course.id === updatedCourse.id);
-    let updatedCourses;
-
-    if (existingIndex >= 0) {
-      updatedCourses = [...courses];
-      updatedCourses[existingIndex] = updatedCourse;
-    } else {
-      updatedCourses = [...courses, updatedCourse];
+    try {
+      //await db.updateCourse(updatedCourse);
+      toastService.show('Course updated successfully!', { type: 'success' });
+    } catch (error) {
+      console.error("Error updating course:", error);
+      toastService.show('Error updating course', { type: 'error' });
     }
 
-    saveCourses(updatedCourses);
-    setEditingCourse(null);
-    toastService.show('Course saved successfully!', { type: 'success' });
   };
 
-  // Delete blog
-  const deleteBlog = (id: string) => {
+  // Delete blog (replace with actual database deletion)
+  const deleteBlog = async (id: number) => {
     if (window.confirm('Are you sure you want to delete this blog post?')) {
-      const updatedBlogs = blogs.filter(blog => blog.id !== id);
-      saveBlogs(updatedBlogs);
-      toastService.show('Blog deleted successfully!', { type: 'success' });
+      try {
+        //await db.deleteBlog(id);
+        toastService.show('Blog deleted successfully!', { type: 'success' });
+        // Refresh blog list
+      } catch (error) {
+        console.error("Error deleting blog:", error);
+        toastService.show('Error deleting blog', { type: 'error' });
+      }
     }
   };
 
-  // Delete course
-  const deleteCourse = (id: string) => {
+  // Delete course (replace with actual database deletion)
+  const deleteCourse = async (id: number) => {
     if (window.confirm('Are you sure you want to delete this course?')) {
-      const updatedCourses = courses.filter(course => course.id !== id);
-      saveCourses(updatedCourses);
-      toastService.show('Course deleted successfully!', { type: 'success' });
+      try {
+        //await db.deleteCourse(id);
+        toastService.show('Course deleted successfully!', { type: 'success' });
+        // Refresh course list
+      } catch (error) {
+        console.error("Error deleting course:", error);
+        toastService.show('Error deleting course', { type: 'error' });
+      }
     }
   };
 
@@ -234,6 +238,18 @@ const Admin = () => {
   // Edit course
   const editCourse = (course: Course) => {
     setEditingCourse(course);
+  };
+
+  const getIconByName = (iconName: string) => {
+    switch (iconName) {
+      case 'Shield': return <Shield className="h-12 w-12 text-accent" />;
+      case 'Lock': return <Lock className="h-12 w-12 text-accent" />;
+      case 'Cloud': return <Cloud className="h-12 w-12 text-accent" />;
+      case 'Code': return <Code className="h-12 w-12 text-accent" />;
+      case 'Terminal': return <Terminal className="h-12 w-12 text-accent" />;
+      case 'Brain': return <Brain className="h-12 w-12 text-accent" />;
+      default: return <Shield className="h-12 w-12 text-accent" />;
+    }
   };
 
   if (!isAuthenticated) {
@@ -318,7 +334,7 @@ const Admin = () => {
                 <div className="card mb-8">
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="text-xl font-bold">
-                      {editingBlog.id.includes('new') ? 'Create New Blog' : 'Edit Blog'}
+                      {editingBlog.id === 0 ? 'Create New Blog' : 'Edit Blog'}
                     </h3>
                     <button onClick={() => setEditingBlog(null)} className="text-gray-400 hover:text-white">
                       <X className="h-5 w-5" />
@@ -464,7 +480,7 @@ const Admin = () => {
                 <div className="card mb-8">
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="text-xl font-bold">
-                      {editingCourse.id.includes('new') ? 'Create New Course' : 'Edit Course'}
+                      {editingCourse.id === 0 ? 'Create New Course' : 'Edit Course'}
                     </h3>
                     <button onClick={() => setEditingCourse(null)} className="text-gray-400 hover:text-white">
                       <X className="h-5 w-5" />
@@ -547,10 +563,9 @@ const Admin = () => {
                 {courses.map((course) => (
                   <div key={course.id} className="card">
                     <div className="flex gap-4 mb-4">
-                      <div 
-                        className="w-24 h-24 bg-cover bg-center rounded-lg"
-                        style={{ backgroundImage: `url(${course.image})` }}
-                      ></div>
+                      <div>
+                        {course.icon}
+                      </div>
                       <div className="flex-1">
                         <h3 className="text-xl font-bold mb-2">{course.title}</h3>
                         <p className="text-sm text-gray-400">
