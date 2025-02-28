@@ -1,0 +1,6 @@
+
+Contact: mailto:bytehatacademy@gmail.com
+Expires: 2025-01-01T00:00:00.000Z
+Preferred-Languages: en
+Policy: https://bytehatacademy.com/security-policy
+Hiring: https://bytehatacademy.com/careers

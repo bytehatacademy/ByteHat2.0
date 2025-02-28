@@ -1,183 +1,177 @@
 
-# ByteHat Academy Website
+# ByteHat Academy - Cybersecurity Training Platform
 
-![ByteHat Academy Logo](logo.png)
+![ByteHat Academy](public/logo.png)
 
-A modern, responsive website for ByteHat Academy, a cybersecurity training institution offering courses in ethical hacking, cloud security, DevSecOps, and more.
+ByteHat Academy is a comprehensive cybersecurity training platform offering courses in Ethical Hacking, Cloud Security, DevSecOps, and more. This repository contains the complete source code for the ByteHat Academy website.
 
 ## Table of Contents
 
-- [Overview](#overview)
 - [Features](#features)
 - [Technology Stack](#technology-stack)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Running Locally](#running-locally)
+  - [Environment Variables](#environment-variables)
 - [Project Structure](#project-structure)
-- [Setup and Installation](#setup-and-installation)
-- [Development](#development)
 - [Deployment](#deployment)
-- [SEO Optimization](#seo-optimization)
+  - [Building for Production](#building-for-production)
+  - [Deploying on Replit](#deploying-on-replit)
+- [Security Features](#security-features)
+- [Testing](#testing)
 - [Contributing](#contributing)
 - [License](#license)
 
-## Overview
-
-ByteHat Academy website is built as a modern single-page application (SPA) using React, TypeScript, and Tailwind CSS. The site includes course listings, blog posts, contact forms, and other features needed for an educational institution.
-
 ## Features
 
-- **Responsive Design**: Mobile-first approach ensuring compatibility across all devices
-- **Dark/Light Mode**: User preference-based theme switching
-- **Dynamic Course Catalog**: Showcase of cybersecurity courses with detailed information
-- **Blog Platform**: Articles about cybersecurity topics and industry news
-- **Contact System**: Forms for user inquiries with email integration
-- **Search Functionality**: Site-wide search for courses and blog posts
-- **SEO Optimized**: Structured data, meta tags, and other SEO best practices
-- **Accessibility**: WCAG compliant for maximum user accessibility
+- Responsive design that works across all devices
+- Course catalog with detailed information
+- Blog with cybersecurity articles and insights
+- Contact form with email integration
+- Search functionality across courses and blog posts
+- Dark mode support
+- SEO-optimized for better visibility
 
 ## Technology Stack
 
 - **Frontend Framework**: React with TypeScript
-- **Routing**: React Router v6
+- **Routing**: React Router
 - **Styling**: Tailwind CSS
-- **Icons**: Lucide React
 - **Build Tool**: Vite
-- **SEO**: React Helmet Async
-- **Form Handling**: Native React forms
-- **Email Service**: EmailJS
-- **Deployment**: Replit hosting
+- **Email Integration**: EmailJS
+- **Deployment**: Replit
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v14 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/bytehatacademy/bytehat-website.git
+   cd bytehat-website
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn
+   ```
+
+3. Set up environment variables by copying the example file:
+   ```bash
+   cp .env.example .env
+   ```
+   
+4. Update the environment variables with your values (see [Environment Variables](#environment-variables) section).
+
+### Running Locally
+
+Start the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+The application will be available at `http://localhost:3000`.
+
+### Environment Variables
+
+Create a `.env` file in the root directory with the following variables:
+
+```
+# EmailJS Configuration
+VITE_EMAIL_SERVICE_ID=your_service_id
+VITE_EMAIL_TEMPLATE_ID=your_template_id
+VITE_EMAIL_USER_ID=your_user_id
+
+# Site Base URL (used for SEO)
+VITE_SITE_URL=https://bytehatacademy.com
+```
+
+In Replit, you can set these as Secrets in the appropriate tool.
 
 ## Project Structure
 
 ```
-├── public/                  # Static files
-│   ├── robots.txt           # Instructions for search engine crawlers
-│   ├── sitemap.xml          # Site map for search engines
-│   └── security.txt         # Security contact information
-├── src/                     # Source code
-│   ├── components/          # Reusable React components
-│   │   ├── CourseModal.tsx  # Course details modal
-│   │   ├── Footer.tsx       # Site footer
-│   │   ├── Navbar.tsx       # Navigation bar
-│   │   ├── SearchBar.tsx    # Search functionality
-│   │   ├── SEO.tsx          # SEO component with structured data
-│   │   └── ToastContainer.tsx # Notification system
-│   ├── images/              # Image assets
-│   ├── pages/               # Page components
-│   │   ├── About.tsx        # About page
-│   │   ├── Blog.tsx         # Blog listing page
-│   │   ├── BlogPost.tsx     # Individual blog post page
-│   │   ├── Contact.tsx      # Contact page
-│   │   ├── Courses.tsx      # Course listing page
-│   │   ├── Home.tsx         # Homepage
-│   │   ├── NotFound.tsx     # 404 page
-│   │   └── Search.tsx       # Search results page
-│   ├── utils/               # Utility functions
-│   │   └── emailService.ts  # Email service integration
-│   ├── App.css              # Global CSS
-│   ├── App.tsx              # Main application component
-│   ├── index.css            # CSS entry point
-│   └── main.tsx             # Application entry point
-├── .gitignore               # Git ignore file
-├── index.html               # HTML entry point
-├── package.json             # Dependencies and scripts
-├── postcss.config.js        # PostCSS configuration
-├── tailwind.config.js       # Tailwind CSS configuration
-├── tsconfig.json            # TypeScript configuration
-└── vite.config.ts           # Vite configuration
+bytehat-academy/
+├── public/               # Static files
+│   ├── robots.txt        # Instructions for search engine crawlers
+│   ├── sitemap.xml       # XML sitemap for search engines
+│   └── ...
+├── src/                  # Source code
+│   ├── components/       # Reusable React components
+│   ├── pages/            # Page components
+│   ├── utils/            # Utility functions
+│   ├── images/           # Image assets
+│   └── ...
+├── .env.example          # Example environment variables
+├── package.json          # Project dependencies and scripts
+├── vite.config.ts        # Vite configuration
+└── ...
 ```
-
-## Setup and Installation
-
-### Prerequisites
-
-- Node.js (v14.0.0 or later)
-- npm (v6.0.0 or later)
-
-### Installation
-
-1. Clone the repository (if using Git):
-   ```bash
-   git clone https://github.com/yourusername/bytehat-academy.git
-   cd bytehat-academy
-   ```
-
-2. If using Replit, simply fork the Repl.
-
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-## Development
-
-### Running Locally
-
-To start the development server:
-
-```bash
-npm run dev
-```
-
-This will start the development server at http://localhost:3000
-
-### Code Style and Linting
-
-The project uses ESLint for code quality. To run the linter:
-
-```bash
-npm run lint
-```
-
-### Building for Production
-
-To create a production build:
-
-```bash
-npm run build
-```
-
-This will generate optimized files in the `build` directory.
 
 ## Deployment
 
+### Building for Production
+
+To build the application for production:
+
+```bash
+npm run build
+# or
+yarn build
+```
+
+This will create a `build` directory with optimized production files.
+
 ### Deploying on Replit
 
-1. Make sure your project builds successfully with `npm run build`
-2. Go to the "Deployments" tab in your Replit workspace
-3. Select "Static" as the deployment type
-4. Set the build command: `npm run build`
-5. Set the output directory: `build`
-6. Click "Deploy"
+1. Fork this repository to your Replit account.
+2. Set the necessary environment variables in the Secrets tool.
+3. Run the following command to build the project:
+   ```bash
+   npm run build
+   ```
+4. Use the Deployment tool to deploy your application.
 
-### Environment Variables
+## Security Features
 
-For production, you may need to set the following environment variables:
+ByteHat Academy implements several security measures:
 
-- `VITE_EMAIL_SERVICE_ID`: Your EmailJS service ID
-- `VITE_EMAIL_TEMPLATE_ID`: Your EmailJS template ID
-- `VITE_EMAIL_USER_ID`: Your EmailJS user ID
+- **Content Security Policy (CSP)**: Restricts which resources can be loaded.
+- **CSRF Protection**: Prevents cross-site request forgery attacks.
+- **Input Sanitization**: All user inputs are sanitized to prevent XSS attacks.
+- **Rate Limiting**: Forms implement basic rate limiting to prevent abuse.
+- **Error Handling**: Comprehensive error handling with an error boundary component.
+- **Secure Headers**: Implements various security headers for better protection.
+- **Offline Support**: Service worker for improved performance and offline capabilities.
 
-In Replit, you can set these in the "Secrets" tool.
+## Testing
 
-## SEO Optimization
+Run tests with:
 
-The website implements several SEO best practices:
-
-1. **Meta Tags**: Comprehensive meta tags for all pages
-2. **Structured Data**: JSON-LD for articles, courses, and organization information
-3. **Sitemap**: XML sitemap for search engine indexing
-4. **Robots.txt**: Instructions for search engine crawlers
-5. **Canonical URLs**: Proper canonical URL tags
-6. **Semantic HTML**: Proper use of HTML5 semantic elements
-7. **Mobile Optimization**: Responsive design for all devices
-8. **Page Speed**: Optimized assets and code splitting for fast loading
+```bash
+npm test
+# or
+yarn test
+```
 
 ## Contributing
 
 1. Fork the repository
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request
+2. Create your feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m 'Add some amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
 
 ## License
 
