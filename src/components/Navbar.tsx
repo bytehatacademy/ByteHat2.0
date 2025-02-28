@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Sun, Moon, Search } from 'lucide-react';
@@ -55,58 +56,50 @@ const Navbar: React.FC<NavbarProps> = ({ currentTheme, toggleTheme }) => {
             </Link>
           </div>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link
-              to="/"
-              className={`${
-                location.pathname === '/'
-                  ? 'text-accent'
-                  : 'text-gray-300 dark:text-gray-300 light:text-gray-700 hover:text-accent'
-              } transition-colors`}
-            >
-              Home
-            </Link>
-            <Link
-              to="/courses"
-              className={`${
-                location.pathname === '/courses'
-                  ? 'text-accent'
-                  : 'text-gray-300 dark:text-gray-300 light:text-gray-700 hover:text-accent'
-              } transition-colors`}
-            >
-              Courses
-            </Link>
-            <Link
-              to="/blog"
-              className={`${
-                location.pathname.includes('/blog')
-                  ? 'text-accent'
-                  : 'text-gray-300 dark:text-gray-300 light:text-gray-700 hover:text-accent'
-              } transition-colors`}
-            >
-              Blog
-            </Link>
-            <Link
-              to="/about"
-              className={`${
-                location.pathname === '/about'
-                  ? 'text-accent'
-                  : 'text-gray-300 dark:text-gray-300 light:text-gray-700 hover:text-accent'
-              } transition-colors`}
-            >
-              About
-            </Link>
-            <Link
-              to="/contact"
-              className={`${
-                location.pathname === '/contact'
-                  ? 'text-accent'
-                  : 'text-gray-300 dark:text-gray-300 light:text-gray-700 hover:text-accent'
-              } transition-colors`}
-            >
-              Contact
-            </Link>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-4">
+            <div className="flex items-center space-x-4">
+              <Link
+                to="/courses"
+                className={`px-3 py-2 rounded-md text-sm font-medium ${
+                  location.pathname === '/courses'
+                    ? 'text-accent'
+                    : 'text-gray-300 dark:text-gray-300 light:text-gray-700 hover:text-accent'
+                } transition-colors`}
+              >
+                Courses
+              </Link>
+              <Link
+                to="/blog"
+                className={`px-3 py-2 rounded-md text-sm font-medium ${
+                  location.pathname === '/blog'
+                    ? 'text-accent'
+                    : 'text-gray-300 dark:text-gray-300 light:text-gray-700 hover:text-accent'
+                } transition-colors`}
+              >
+                Blog
+              </Link>
+              <Link
+                to="/about"
+                className={`px-3 py-2 rounded-md text-sm font-medium ${
+                  location.pathname === '/about'
+                    ? 'text-accent'
+                    : 'text-gray-300 dark:text-gray-300 light:text-gray-700 hover:text-accent'
+                } transition-colors`}
+              >
+                About
+              </Link>
+              <Link
+                to="/contact"
+                className={`px-3 py-2 rounded-md text-sm font-medium ${
+                  location.pathname === '/contact'
+                    ? 'text-accent'
+                    : 'text-gray-300 dark:text-gray-300 light:text-gray-700 hover:text-accent'
+                } transition-colors`}
+              >
+                Contact
+              </Link>
+            </div>
 
             {/* Desktop Search */}
             <div className="relative">
@@ -159,25 +152,15 @@ const Navbar: React.FC<NavbarProps> = ({ currentTheme, toggleTheme }) => {
         </div>
       </div>
 
-      {/* Mobile menu, show/hide based on menu state */}
+      {/* Mobile Menu */}
       <div
-        id="mobile-menu"
         className={`md:hidden transition-all duration-300 ease-in-out ${
-          isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+          isOpen
+            ? 'max-h-[300px] opacity-100 border-t border-gray-800'
+            : 'max-h-0 opacity-0 overflow-hidden'
         }`}
       >
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-800 dark:bg-gray-800 light:bg-gray-100">
-          <Link
-            to="/"
-            className={`block px-3 py-2 rounded-md text-base font-medium ${
-              location.pathname === '/'
-                ? 'text-accent'
-                : 'text-white dark:text-white light:text-gray-900 hover:text-accent'
-            }`}
-            onClick={() => setIsOpen(false)}
-          >
-            Home
-          </Link>
+        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           <Link
             to="/courses"
             className={`block px-3 py-2 rounded-md text-base font-medium ${
@@ -192,7 +175,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentTheme, toggleTheme }) => {
           <Link
             to="/blog"
             className={`block px-3 py-2 rounded-md text-base font-medium ${
-              location.pathname.includes('/blog')
+              location.pathname === '/blog'
                 ? 'text-accent'
                 : 'text-white dark:text-white light:text-gray-900 hover:text-accent'
             }`}
