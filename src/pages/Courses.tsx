@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { Shield, Cloud, Code, Terminal, Brain, Lock } from 'lucide-react';
 import CourseModal from '../components/CourseModal';
 import { useLocation } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 interface Course {
   icon: JSX.Element;
@@ -90,17 +90,12 @@ const Courses = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Cybersecurity Courses | ByteHat Academy</title>
-        <meta
-          name="description"
-          content="Comprehensive cybersecurity courses including ethical hacking, cloud security, DevSecOps, and more. Start your cybersecurity career with ByteHat Academy."
-        />
-        <meta
-          name="keywords"
-          content="cybersecurity courses, ethical hacking training, DevSecOps certification, cloud security training"
-        />
-      </Helmet>
+      <SEO
+        title="Cybersecurity Courses | ByteHat Academy"
+        description="Comprehensive cybersecurity courses including ethical hacking, cloud security, DevSecOps, and more. Start your cybersecurity career with ByteHat Academy."
+        keywords="cybersecurity courses, ethical hacking training, DevSecOps certification, cloud security training, SOC analyst training, CEH course, cybersecurity certification"
+        url="/courses"
+      />
 
       <div className="pt-20 pb-16 bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

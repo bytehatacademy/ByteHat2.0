@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, User, Tag, ArrowLeft, MessageCircle } from 'lucide-react';
 import { toastService } from '../components/ToastContainer';
+import SEO from '../components/SEO';
 
 // Mock data for blog posts (should match the data in Blog.tsx)
 const blogPosts = [
@@ -194,11 +194,21 @@ const BlogPost = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{post.title} | ByteHat Academy</title>
-        <meta name="description" content={post.content.substring(0, 155)} />
-        <meta name="keywords" content={`${post.category}, cybersecurity, ByteHat Academy, ${post.title}`} />
-      </Helmet>
+      <SEO 
+        title={`${post.title} | ByteHat Academy`}
+        description={post.content.substring(0, 155).replace(/<[^>]*>/g, '')}
+        keywords={`${post.category}, cybersecurity, ByteHat Academy, ethical hacking, devsecops, cloud security, ${post.title.toLowerCase()}`}
+        type="article"
+        url={`/blog/${post.slug}`}
+        image={post.image}
+        publishedDate={new Date(post.date).toISOString()}
+        articleSchema={{
+          authorName: post.author,
+          publishedDate: new Date(post.date).toISOString(),
+          image: post.image,
+          category: post.category
+        }}
+      />
 
       <div className="pt-20 pb-16 bg-gray-900">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">

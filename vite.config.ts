@@ -4,16 +4,30 @@ import react from '@vitejs/plugin-react';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/', // Matches your repo name—good!
+  base: '/', 
   optimizeDeps: {
-    exclude: ['lucide-react'], // Fine for dev, no change needed
+    exclude: ['lucide-react'],
   },
   server: {
-    port: 3000, // Works locally, no change needed
+    port: 3000,
+    host: '0.0.0.0', // Makes the server accessible outside localhost
   },
   build: {
-    outDir: 'build', // Default, but explicitly set for clarity
-    assetsDir: 'assets', // Default, ensures assets are bundled correctly
-    sourcemap: false, // Disable sourcemaps for production (optional, saves space)
+    outDir: 'build',
+    assetsDir: 'assets',
+    sourcemap: false,
+    // Generate SPA fallback for client-side routing
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'ui-vendor': ['lucide-react', 'react-helmet-async'],
+        },
+      },
+    },
+  },
+  preview: {
+    port: 3000,
+    host: '0.0.0.0',
   },
 });
