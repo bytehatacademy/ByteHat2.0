@@ -61,6 +61,17 @@ html.light h1.text-5xl {
   @apply text-gray-900;
 }
 
+/* Keep hero section text white in light mode for better contrast with background image */
+html.light .hero-section h1,
+html.light .hero-section p {
+  @apply text-white;
+}
+
+/* Hero section subtitle specific override */
+html.light .hero-section p.text-gray-400 {
+  @apply text-gray-200;
+}
+
 html.light div.text-gray-400,
 html.light p.text-gray-400,
 html.light span.text-gray-400 {
@@ -139,13 +150,30 @@ html.light section p.text-xl {
   @apply text-gray-700;
 }
 
-/* Light mode search bar */
+/* Light mode search bar and navbar */
 html.light input.bg-gray-800.text-white {
   @apply bg-white text-gray-800 border border-gray-300;
 }
 
 html.light .bg-gray-800.border-gray-700 {
   @apply bg-white border-gray-200;
+}
+
+html.light header .nav-blur {
+  @apply bg-white shadow-sm;
+}
+
+html.light header nav a {
+  @apply text-gray-700 hover:text-teal-600;
+}
+
+html.light header .text-gray-300 {
+  @apply text-gray-700;
+}
+
+/* Course modal boxes in light mode */
+html.light .bg-gray-800.px-3.py-1.rounded-full {
+  @apply bg-gray-100 text-gray-700;
 }
 
 html.light .bg-gray-700 {

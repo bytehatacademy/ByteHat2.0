@@ -18,25 +18,27 @@ const CourseModal: React.FC<CourseModalProps> = ({ course, onClose }) => {
   const [email, setEmail] = useState('');
   const [isEnrolling, setIsEnrolling] = useState(false);
   const [message, setMessage] = useState('');
+  const [formType, setFormType] = useState<'enroll' | 'demo'>('enroll');
 
   const handleEnroll = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsEnrolling(true);
     try {
       await sendEmail({
         to_email: 'bytehatacademy@gmail.com',
         from_name: email,
-        message: `Enrollment request for ${course.title}`,
+        message: formType === 'enroll' 
+          ? `Enrollment request for ${course.title}`
+          : `Demo request for ${course.title}`,
         reply_to: email,
       });
       toastService.show('Thank you for your interest! We will contact you soon.', 'success');
       setMessage('Thank you for your interest! We will contact you soon.');
       setEmail('');
+      setIsEnrolling(false);
     } catch (error) {
       toastService.show('Something went wrong. Please try again later.', 'error');
       setMessage('Something went wrong. Please try again later.');
     }
-    setIsEnrolling(false);
   };
 
   const handleDownloadSyllabus = () => {
@@ -87,15 +89,30 @@ const CourseModal: React.FC<CourseModalProps> = ({ course, onClose }) => {
               Download Syllabus
             </button>
             <button
-              onClick={() => setIsEnrolling(true)}
+              onClick={() => {
+                setFormType('enroll');
+                setIsEnrolling(true);
+              }}
               className="btn-primary flex-1"
             >
               Enroll Now
+            </button>
+            <button
+              onClick={() => {
+                setFormType('demo');
+                setIsEnrolling(true);
+              }}
+              className="btn-secondary flex-1"
+            >
+              Book a Demo
             </button>
           </div>
 
           {isEnrolling && (
             <form onSubmit={handleEnroll} className="space-y-4">
+              <h3 className="text-xl font-bold mb-4">
+                {formType === 'enroll' ? 'Enroll in this Course' : 'Book a Demo Session'}
+              </h3>
               <div>
                 <label
                   htmlFor="email"
@@ -113,9 +130,18 @@ const CourseModal: React.FC<CourseModalProps> = ({ course, onClose }) => {
                   required
                 />
               </div>
-              <button type="submit" className="btn-primary w-full">
-                Submit
-              </button>
+              <div className="flex justify-end gap-3">
+                <button 
+                  type="button" 
+                  onClick={() => setIsEnrolling(false)}
+                  className="btn-secondary"
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="btn-primary">
+                  Submit
+                </button>
+              </div>
             </form>
           )}
 
