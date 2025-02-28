@@ -13,6 +13,7 @@ const blogPosts = [
     image:
       'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80',
     category: 'Cloud Security',
+    slug: 'top-5-cloud-security-tips-for-2025',
   },
   {
     title: 'Why Learn Ethical Hacking in 2025',
@@ -23,6 +24,7 @@ const blogPosts = [
     image:
       'https://images.unsplash.com/photo-1563206767-5b18f218e8de?auto=format&fit=crop&q=80',
     category: 'Ethical Hacking',
+    slug: 'why-learn-ethical-hacking-in-2025',
   },
   {
     title: 'DevSecOps: The Future of Secure Development',
@@ -33,6 +35,7 @@ const blogPosts = [
     image:
       'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&q=80',
     category: 'DevSecOps',
+    slug: 'devsecops-the-future-of-secure-development',
   },
   {
     title: 'AI in Cybersecurity: Trends to Watch',
@@ -43,6 +46,7 @@ const blogPosts = [
     image:
       'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80',
     category: 'AI Security',
+    slug: 'ai-in-cybersecurity-trends-to-watch',
   },
 ];
 
@@ -96,10 +100,13 @@ const Blog = () => {
                       <User className="h-4 w-4 mr-1" />
                       {post.author}
                     </div>
-                    <button className="flex items-center text-accent hover:text-accent/80 transition-colors">
+                    <Link 
+                      to={`/blog/${post.slug}`} 
+                      className="flex items-center text-accent hover:text-accent/80 transition-colors"
+                    >
                       Read More
                       <ArrowRight className="h-4 w-4 ml-1" />
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </article>

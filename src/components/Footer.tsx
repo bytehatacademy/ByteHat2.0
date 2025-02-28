@@ -88,19 +88,31 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-4">Newsletter</h4>
+            <h4 className="text-white font-semibold mb-4">Quick Contact</h4>
             <p className="text-sm mb-4">
-              Subscribe to stay updated with our latest courses and cybersecurity
-              news.
+              Have a question? Send us a quick message.
             </p>
             <form className="flex flex-col space-y-2">
               <input
                 type="email"
-                placeholder="Enter your email"
+                placeholder="Your email"
                 className="bg-gray-800 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
               />
-              <button type="submit" className="btn-primary">
-                Subscribe
+              <textarea
+                placeholder="Your message"
+                rows={3}
+                className="bg-gray-800 text-white px-4 py-2 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-accent"
+              ></textarea>
+              <button 
+                type="submit" 
+                className="btn-primary"
+                onClick={(e) => {
+                  e.preventDefault();
+                  alert('Message sent! We will get back to you soon.');
+                  // In a real app, you would submit this to your backend
+                }}
+              >
+                Send Message
               </button>
             </form>
           </div>

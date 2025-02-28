@@ -30,7 +30,39 @@ const Contact = () => {
             {/* Contact Form */}
             <div className="card">
               <h2 className="text-2xl font-bold mb-6">Send us a message</h2>
-              <form className="space-y-6">
+              <form 
+                className="space-y-6"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const formData = new FormData(e.currentTarget);
+                  const name = formData.get('name') as string;
+                  const email = formData.get('email') as string;
+                  const message = formData.get('message') as string;
+
+                  // Basic validation
+                  if (!name || !email || !message) {
+                    alert('Please fill in all fields');
+                    return;
+                  }
+
+                  // In a real app, you would send this data to your backend
+                  // Here we're simulating the email being sent
+                  console.log('Sending email:', { name, email, message });
+                  
+                  // Create a mailto: link as a fallback
+                  const subject = `Contact from ByteHat Academy - ${name}`;
+                  const body = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
+                  const mailtoUrl = `mailto:bytehatacademy@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                  
+                  // Offer to open email client
+                  if (window.confirm('Thank you for your message! Would you like to open your email client to send this message directly?')) {
+                    window.location.href = mailtoUrl;
+                  } else {
+                    alert('Message received! We will get back to you soon.');
+                    e.currentTarget.reset();
+                  }
+                }}
+              >
                 <div>
                   <label
                     htmlFor="name"
@@ -41,8 +73,10 @@ const Contact = () => {
                   <input
                     type="text"
                     id="name"
+                    name="name"
                     className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-accent"
                     placeholder="Your name"
+                    required
                   />
                 </div>
                 <div>
@@ -55,8 +89,10 @@ const Contact = () => {
                   <input
                     type="email"
                     id="email"
+                    name="email"
                     className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-accent"
                     placeholder="your@email.com"
+                    required
                   />
                 </div>
                 <div>
@@ -68,9 +104,11 @@ const Contact = () => {
                   </label>
                   <textarea
                     id="message"
+                    name="message"
                     rows={6}
                     className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-accent"
                     placeholder="Your message"
+                    required
                   />
                 </div>
                 <button type="submit" className="btn-primary w-full">
