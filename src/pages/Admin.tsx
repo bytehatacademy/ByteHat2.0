@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/Tabs';
-import { toast } from 'react-hot-toast';
+import { toastService } from "../components/ToastContainer";
 import { Pencil, Trash2, Plus, Save, X } from 'lucide-react';
 
 interface Blog {
@@ -32,20 +31,20 @@ const Admin = () => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [courses, setCourses] = useState<Course[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
+
   // State for editing
   const [editingBlog, setEditingBlog] = useState<Blog | null>(null);
   const [editingCourse, setEditingCourse] = useState<Course | null>(null);
-  
+
   // Admin credentials (in a real app, this would be handled securely on a server)
   const adminUsername = "admin";
   const adminPassword = "bytehat2025"; // Change this to something secure
-  
+
   // Load data from localStorage on component mount
   useEffect(() => {
     const storedBlogs = localStorage.getItem('bytehat_blogs');
     const storedCourses = localStorage.getItem('bytehat_courses');
-    
+
     // If no data in localStorage, load from hardcoded data
     if (!storedBlogs) {
       // Import from BlogPost.tsx
@@ -65,7 +64,7 @@ const Admin = () => {
     } else {
       setBlogs(JSON.parse(storedBlogs));
     }
-    
+
     if (!storedCourses) {
       // Import from Courses.tsx
       import('../pages/Courses').then((module) => {
@@ -92,12 +91,12 @@ const Admin = () => {
     const formData = new FormData(e.target as HTMLFormElement);
     const username = formData.get('username') as string;
     const password = formData.get('password') as string;
-    
+
     if (username === adminUsername && password === adminPassword) {
       setIsAuthenticated(true);
       localStorage.setItem('bytehat_admin_auth', 'true');
     } else {
-      toast.error('Invalid credentials');
+      toastService.show('Invalid credentials', { type: 'error' });
     }
   };
 
@@ -126,7 +125,7 @@ const Admin = () => {
       category: 'Category',
       slug: `new-blog-post-${Date.now()}`
     };
-    
+
     setEditingBlog(newBlog);
   };
 
@@ -141,7 +140,7 @@ const Admin = () => {
       status: 'Enroll Now',
       image: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&q=80'
     };
-    
+
     setEditingCourse(newCourse);
   };
 
@@ -149,7 +148,7 @@ const Admin = () => {
   const updateBlog = (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingBlog) return;
-    
+
     const formData = new FormData(e.target as HTMLFormElement);
     const updatedBlog: Blog = {
       ...editingBlog,
@@ -162,27 +161,27 @@ const Admin = () => {
       category: formData.get('category') as string,
       slug: formData.get('slug') as string
     };
-    
+
     const existingIndex = blogs.findIndex(blog => blog.id === updatedBlog.id);
     let updatedBlogs;
-    
+
     if (existingIndex >= 0) {
       updatedBlogs = [...blogs];
       updatedBlogs[existingIndex] = updatedBlog;
     } else {
       updatedBlogs = [...blogs, updatedBlog];
     }
-    
+
     saveBlogs(updatedBlogs);
     setEditingBlog(null);
-    toast.success('Blog saved successfully!');
+    toastService.show('Blog saved successfully!', { type: 'success' });
   };
 
   // Update course
   const updateCourse = (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingCourse) return;
-    
+
     const formData = new FormData(e.target as HTMLFormElement);
     const updatedCourse: Course = {
       ...editingCourse,
@@ -193,20 +192,20 @@ const Admin = () => {
       status: formData.get('status') as string,
       image: formData.get('image') as string
     };
-    
+
     const existingIndex = courses.findIndex(course => course.id === updatedCourse.id);
     let updatedCourses;
-    
+
     if (existingIndex >= 0) {
       updatedCourses = [...courses];
       updatedCourses[existingIndex] = updatedCourse;
     } else {
       updatedCourses = [...courses, updatedCourse];
     }
-    
+
     saveCourses(updatedCourses);
     setEditingCourse(null);
-    toast.success('Course saved successfully!');
+    toastService.show('Course saved successfully!', { type: 'success' });
   };
 
   // Delete blog
@@ -214,7 +213,7 @@ const Admin = () => {
     if (window.confirm('Are you sure you want to delete this blog post?')) {
       const updatedBlogs = blogs.filter(blog => blog.id !== id);
       saveBlogs(updatedBlogs);
-      toast.success('Blog deleted successfully!');
+      toastService.show('Blog deleted successfully!', { type: 'success' });
     }
   };
 
@@ -223,7 +222,7 @@ const Admin = () => {
     if (window.confirm('Are you sure you want to delete this course?')) {
       const updatedCourses = courses.filter(course => course.id !== id);
       saveCourses(updatedCourses);
-      toast.success('Course deleted successfully!');
+      toastService.show('Course deleted successfully!', { type: 'success' });
     }
   };
 
