@@ -8,10 +8,23 @@
   html {
     font-family: 'Montserrat', sans-serif;
   }
+  
+  html.dark {
+    color-scheme: dark;
+  }
+  
+  html.light {
+    color-scheme: light;
+  }
 }
 
+/* Dark Mode (Default) */
 .nav-blur {
   @apply bg-gray-900/70 backdrop-blur-lg;
+}
+
+html.light .nav-blur {
+  @apply bg-white/70 backdrop-blur-lg;
 }
 
 .btn-primary {
@@ -26,6 +39,47 @@
   @apply bg-gray-800 p-6 rounded-xl border border-gray-700 hover:border-teal-500 transition-all duration-300;
 }
 
+html.light .card {
+  @apply bg-white p-6 rounded-xl border border-gray-200 hover:border-teal-500 transition-all duration-300 text-gray-800;
+}
+
 .section-padding {
   @apply py-16 md:py-24;
+}
+
+/* Light Mode Overrides */
+html.light {
+  @apply text-gray-800;
+}
+
+html.light div.bg-gray-900 {
+  @apply bg-gray-100;
+}
+
+html.light div.text-gray-400,
+html.light p.text-gray-400,
+html.light span.text-gray-400 {
+  @apply text-gray-600;
+}
+
+html.light div.text-gray-300,
+html.light p.text-gray-300,
+html.light span.text-gray-300 {
+  @apply text-gray-700;
+}
+
+html.light div.bg-gray-800,
+html.light input.bg-gray-800, 
+html.light textarea.bg-gray-800 {
+  @apply bg-white border-gray-300;
+}
+
+html.light header,
+html.light nav {
+  @apply text-gray-800;
+}
+
+html.light a.text-gray-300,
+html.light button.text-gray-300 {
+  @apply text-gray-700 hover:text-teal-600;
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Monitor, Menu, X } from 'lucide-react';
+import { Monitor, Menu, X, Moon, Sun, Search } from 'lucide-react';
 import SearchBar from './SearchBar';
 import iconImage from '../images/icon.png';
 
@@ -35,8 +35,18 @@ const useScrollDirection = () => {
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [theme, setTheme] = useState('dark');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const location = useLocation();
   const scrollDirection = useScrollDirection();
+  
+  useEffect(() => {
+    // Check if user has previously set a theme
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    setTheme(savedTheme);
+    document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+    document.documentElement.classList.toggle('light', savedTheme === 'light');
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,6 +56,14 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+  
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+    document.documentElement.classList.toggle('light', newTheme === 'light');
+  };
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -95,10 +113,30 @@ const Navbar = () => {
                   {link.name}
                 </Link>
               ))}
+              <button 
+                onClick={toggleTheme}
+                className="text-gray-300 hover:text-accent transition-colors"
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
             </div>
 
-            {/* Mobile Navigation Button */}
-            <div className="md:hidden">
+            {/* Mobile Navigation Buttons */}
+            <div className="md:hidden flex items-center space-x-4">
+              <button
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                className="text-gray-300 hover:text-accent"
+              >
+                <Search size={22} />
+              </button>
+              <button
+                onClick={toggleTheme}
+                className="text-gray-300 hover:text-accent"
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? <Sun size={22} /> : <Moon size={22} />}
+              </button>
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="text-gray-300 hover:text-accent"
@@ -108,12 +146,16 @@ const Navbar = () => {
             </div>
           </div>
 
+          {/* Mobile Search Dropdown */}
+          {isSearchOpen && !isOpen && (
+            <div className="md:hidden px-4 py-3">
+              <SearchBar onItemClick={() => setIsSearchOpen(false)} />
+            </div>
+          )}
+          
           {/* Mobile Navigation Menu */}
           {isOpen && (
             <div className="md:hidden pb-4">
-              <div className="mb-4">
-                <SearchBar />
-              </div>
               <div className="space-y-1">
                 {navLinks.map((link) => (
                   <Link
@@ -129,6 +171,13 @@ const Navbar = () => {
                     {link.name}
                   </Link>
                 ))}
+                <button 
+                  onClick={toggleTheme}
+                  className="flex items-center px-3 py-2 rounded-lg text-base font-medium text-gray-300 hover:text-accent hover:bg-gray-800 w-full"
+                >
+                  {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+                  {theme === 'dark' ? <Sun size={20} className="ml-2" /> : <Moon size={20} className="ml-2" />}
+                </button>
               </div>
             </div>
           )}

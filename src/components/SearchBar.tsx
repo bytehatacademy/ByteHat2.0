@@ -3,6 +3,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Search, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+interface SearchBarProps {
+  onItemClick?: () => void;
+}
+
 // Mock data structure - you would normally fetch this from an API
 const mockSearchData = {
   courses: [
@@ -19,7 +23,7 @@ const mockSearchData = {
   ],
 };
 
-const SearchBar = () => {
+const SearchBar: React.FC<SearchBarProps> = ({ onItemClick }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<{ type: string; items: any[] }[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -81,6 +85,9 @@ const SearchBar = () => {
     navigate(url);
     setQuery('');
     setIsOpen(false);
+    if (onItemClick) {
+      onItemClick();
+    }
   };
 
   const clearSearch = () => {

@@ -11,6 +11,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Search from './pages/Search';
 import NotFound from './pages/NotFound';
+import ToastContainer from './components/ToastContainer';
 import { initEmailJS } from './utils/emailService';
 import './App.css';
 
@@ -18,6 +19,11 @@ function App() {
   useEffect(() => {
     // Initialize EmailJS when the app loads
     initEmailJS();
+    
+    // Apply saved theme or default to dark
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+    document.documentElement.classList.toggle('light', savedTheme === 'light');
   }, []);
 
   return (
@@ -38,6 +44,7 @@ function App() {
             </Routes>
           </main>
           <Footer />
+          <ToastContainer />
         </div>
       </Router>
     </HelmetProvider>
