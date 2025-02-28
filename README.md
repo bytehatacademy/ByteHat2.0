@@ -40,7 +40,6 @@ ByteHat Academy is a comprehensive cybersecurity training platform offering cour
 - **Styling**: Tailwind CSS
 - **Build Tool**: Vite
 - **Email Integration**: EmailJS
-- **Database**: PostgreSQL
 - **Deployment**: Replit
 
 ## Getting Started
@@ -96,23 +95,9 @@ VITE_EMAIL_USER_ID=your_user_id
 
 # Site Base URL (used for SEO)
 VITE_SITE_URL=https://bytehatacademy.com
-
-# Database Configuration
-VITE_DATABASE_URL=postgresql://username:password@hostname:5432/database_name
-
-# Security
-VITE_JWT_SECRET=your_jwt_secret_key
 ```
 
 In Replit, you can set these as Secrets in the appropriate tool.
-
-### Database Setup
-
-The application uses PostgreSQL for data storage. You need to:
-
-1. Create a PostgreSQL database (in Replit, use the built-in Replit Database or connect to an external PostgreSQL instance)
-2. Set the `VITE_DATABASE_URL` environment variable to your database connection string
-3. The application will automatically create the necessary tables and seed initial data on startup
 
 ## Project Structure
 
