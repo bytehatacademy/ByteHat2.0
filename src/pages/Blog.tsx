@@ -3,7 +3,8 @@ import { Helmet } from 'react-helmet-async';
 import { Calendar, User, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const blogPosts = [
+// Default blog posts data (used if localStorage is empty)
+const defaultBlogPosts = [
   {
     title: 'Top 5 Cloud Security Tips for 2025',
     excerpt:
@@ -51,6 +52,16 @@ const blogPosts = [
 ];
 
 const Blog = () => {
+  const [blogPosts, setBlogPosts] = React.useState(defaultBlogPosts);
+  
+  React.useEffect(() => {
+    // Get blogs from localStorage or use default
+    const storedBlogs = localStorage.getItem('bytehat_blogs');
+    if (storedBlogs) {
+      setBlogPosts(JSON.parse(storedBlogs));
+    }
+  }, []);
+  
   return (
     <>
       <Helmet>

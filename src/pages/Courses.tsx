@@ -14,7 +14,8 @@ interface Course {
   image?: string;
 }
 
-const courses: Course[] = [
+// Default courses data (used if localStorage is empty)
+export const courses: Course[] = [
   {
     icon: <Shield className="h-12 w-12 text-accent" />,
     title: 'Ethical Hacking',
@@ -72,14 +73,23 @@ const courses: Course[] = [
 ];
 
 const Courses = () => {
+  const [coursesData, setCoursesData] = useState<Course[]>(courses);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const location = useLocation();
+  
+  // Load courses from localStorage if available
+  useEffect(() => {
+    const storedCourses = localStorage.getItem('bytehat_courses');
+    if (storedCourses) {
+      setCoursesData(JSON.parse(storedCourses));
+    }
+  }, []);
   
   // Handle course opening from search results
   useEffect(() => {
     if (location.state?.openCourse) {
       const courseId = location.state.openCourse;
-      const foundCourse = courses.find(course => 
+      const foundCourse = coursesData.find(course => 
         course.title.toLowerCase().replace(/\s+/g, '-') === courseId);
       
       if (foundCourse) {
@@ -107,7 +117,7 @@ const Courses = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {courses.map((course, index) => (
+            {coursesData.map((course, index) => (
               <div key={index} className="card">
                 <div className="mb-6">{course.icon}</div>
                 <h2 className="text-2xl font-bold mb-3">{course.title}</h2>

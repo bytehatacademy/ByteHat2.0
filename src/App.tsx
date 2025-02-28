@@ -11,6 +11,7 @@ import BlogPost from './pages/BlogPost';
 import Contact from './pages/Contact';
 import Search from './pages/Search';
 import NotFound from './pages/NotFound';
+import Admin from './pages/Admin';
 import ToastContainer from './components/ToastContainer';
 import ErrorBoundary from './components/ErrorBoundary';
 import { initEmailJS } from './utils/emailService';
@@ -55,6 +56,7 @@ function App() {
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/search" element={<Search />} />
+              <Route path="/admin" element={<Admin />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />

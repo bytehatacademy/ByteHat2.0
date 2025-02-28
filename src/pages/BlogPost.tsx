@@ -4,8 +4,8 @@ import { Calendar, User, Tag, ArrowLeft, MessageCircle } from 'lucide-react';
 import { toastService } from '../components/ToastContainer';
 import SEO from '../components/SEO';
 
-// Mock data for blog posts (should match the data in Blog.tsx)
-const blogPosts = [
+// Default blog posts data (used if localStorage is empty)
+export const blogPosts = [
   {
     title: 'Top 5 Cloud Security Tips for 2025',
     content: `
@@ -133,13 +133,17 @@ const BlogPost = () => {
   useEffect(() => {
     setLoading(true);
     
+    // Get blogs from localStorage or use default if not available
+    const storedBlogs = localStorage.getItem('bytehat_blogs');
+    const blogs = storedBlogs ? JSON.parse(storedBlogs) : blogPosts;
+    
     // Find the blog post that matches the slug
     // First try exact match
-    let foundPost = blogPosts.find((post) => post.slug === slug);
+    let foundPost = blogs.find((post) => post.slug === slug);
     
     // If not found, check if the slug might be the title slugified from search results
     if (!foundPost && slug) {
-      foundPost = blogPosts.find((post) => 
+      foundPost = blogs.find((post) => 
         post.title.toLowerCase().replace(/\s+/g, '-').includes(slug.toLowerCase())
       );
     }
