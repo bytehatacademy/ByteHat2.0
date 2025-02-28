@@ -33,79 +33,41 @@ const Contact = () => {
             <div className="card">
               <h2 className="text-2xl font-bold mb-6">Send us a message</h2>
               <form 
-                  className="space-y-6"
-                  onSubmit={async (e) => {
-                    e.preventDefault();
-                    const formData = new FormData(e.currentTarget);
-                    const name = formData.get('name') as string;
-                    const email = formData.get('email') as string;
-                    const message = formData.get('message') as string;
+                className="space-y-6"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  const formData = new FormData(e.currentTarget);
+                  const name = formData.get('name') as string;
+                  const email = formData.get('email') as string;
+                  const message = formData.get('message') as string;
 
-                    // Enhanced validation
-                    if (!name || name.trim().length < 2) {
-                      toastService.show('Please enter your name (minimum 2 characters)', 'warning');
-                      return;
-                    }
+                  // Basic validation
+                  if (!name || !email || !message) {
+                    toastService.show('Please fill in all fields', 'warning');
+                    return;
+                  }
 
-                    // Email validation using regex
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if (!email || !emailRegex.test(email)) {
-                      toastService.show('Please enter a valid email address', 'warning');
-                      return;
-                    }
-
-                    if (!message || message.trim().length < 10) {
-                      toastService.show('Please enter a detailed message (minimum 10 characters)', 'warning');
-                      return;
-                    }
-
-                    // Show loading state and disable form
-                    const form = e.currentTarget;
-                    const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
-                    const originalButtonText = submitButton.innerText;
-                    submitButton.innerText = 'Sending...';
-                    submitButton.disabled = true;
-
-                    // Disable all form inputs during submission
-                    Array.from(form.elements).forEach((element) => {
-                      if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
-                        element.disabled = true;
-                      }
+                  // In a real app, you would send this data to your backend
+                  // Here we're simulating the email being sent
+                  console.log('Sending email:', { name, email, message });
+                  
+                  try {
+                    // Send email via EmailJS
+                    await sendEmail({
+                      to_email: 'bytehatacademy@gmail.com',
+                      from_name: name,
+                      message: message,
+                      reply_to: email,
                     });
-
-                    try {
-                      // Send email via EmailJS
-                      const result = await sendEmail({
-                        to_email: 'bytehatacademy@gmail.com',
-                        from_name: name.trim(),
-                        message: message.trim(),
-                        reply_to: email.trim(),
-                      });
-
-                      if (result && result.status === 200) {
-                        toastService.show('Message sent successfully! We will get back to you soon.', 'success');
-                        form.reset();
-                      } else {
-                        throw new Error('Failed to send message');
-                      }
-                    } catch (error) {
-                      console.error('Error sending email:', error);
-                      toastService.show('Failed to send message. Please try again later.', 'error');
-                    } finally {
-                      // Re-enable form regardless of outcome
-                      submitButton.innerText = originalButtonText;
-                      submitButton.disabled = false;
-
-                      // Re-enable all form inputs
-                      Array.from(form.elements).forEach((element) => {
-                        if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
-                          element.disabled = false;
-                        }
-                      });
-                    }
-                  }}
-                  aria-label="Contact form"
-                >
+                    
+                    toastService.show('Message sent successfully! We will get back to you soon.', 'success');
+                    e.currentTarget.reset();
+                  } catch (error) {
+                    console.error('Error sending email:', error);
+                    toastService.show('Failed to send message. Please try again later.', 'error');
+                  }
+                }}
+              >
                 <div>
                   <label
                     htmlFor="name"

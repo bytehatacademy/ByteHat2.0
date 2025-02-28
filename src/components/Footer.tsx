@@ -102,81 +102,43 @@ const Footer = () => {
                 const email = formData.get('email') as string;
                 const message = formData.get('message') as string;
                 
-                // Email validation
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!email || !emailRegex.test(email)) {
-                  toastService.show('Please enter a valid email address', 'warning');
-                  return;
-                }
-                
-                // Message validation
-                if (!message || message.trim().length < 5) {
-                  toastService.show('Please enter a message (minimum 5 characters)', 'warning');
+                if (!email || !message) {
+                  toastService.show('Please fill in all fields', 'warning');
                   return;
                 }
                 
                 try {
-                  // Show loading state
-                  const submitBtn = e.currentTarget.querySelector('button[type="submit"]') as HTMLButtonElement;
-                  const originalBtnText = submitBtn.innerText;
-                  submitBtn.innerText = 'Sending...';
-                  submitBtn.disabled = true;
-                  
-                  const result = await sendEmail({
+                  await sendEmail({
                     to_email: 'bytehatacademy@gmail.com',
                     from_name: email,
-                    message: message.trim(),
+                    message: message,
                     reply_to: email,
                   });
-                  
-                  if (result && result.status === 200) {
-                    toastService.show('Message sent! We will get back to you soon.', 'success');
-                    e.currentTarget.reset();
-                  } else {
-                    throw new Error('Failed to send message');
-                  }
-                  
-                  // Reset button state
-                  submitBtn.innerText = originalBtnText;
-                  submitBtn.disabled = false;
+                  toastService.show('Message sent! We will get back to you soon.', 'success');
+                  e.currentTarget.reset();
                 } catch (error) {
                   console.error('Error sending email:', error);
                   toastService.show('Failed to send message. Please try again later.', 'error');
-                  
-                  // Reset button state in case of error
-                  const submitBtn = e.currentTarget.querySelector('button[type="submit"]') as HTMLButtonElement;
-                  submitBtn.innerText = 'Send Message';
-                  submitBtn.disabled = false;
                 }
               }}
-              aria-label="Contact form"
             >
-              <label htmlFor="footer-email" className="sr-only">Your email</label>
               <input
                 type="email"
-                id="footer-email"
                 name="email"
                 placeholder="Your email"
                 className="bg-gray-800 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                 required
-                aria-required="true"
-                maxLength={100}
               />
-              <label htmlFor="footer-message" className="sr-only">Your message</label>
               <textarea
-                id="footer-message"
                 name="message"
                 placeholder="Your message"
                 rows={3}
                 className="bg-gray-800 text-white px-4 py-2 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-accent"
                 required
-                aria-required="true"
-                maxLength={500}
               ></textarea>
               <button 
                 type="submit" 
                 className="btn-primary"
-                aria-label="Send message"
               >
                 Send Message
               </button>

@@ -130,43 +130,22 @@ const BlogPost = () => {
   const [loading, setLoading] = useState(true);
   const [notFoundShown, setNotFoundShown] = useState(false);
 
-  /**
-   * Fetch blog post based on the URL slug
-   */
   useEffect(() => {
     setLoading(true);
     
-    if (!slug) {
-      setLoading(false);
-      if (!notFoundShown) {
-        toastService.show('Blog post not found', 'error');
-        setNotFoundShown(true);
-      }
-      return;
-    }
-    
-    // Find the blog post that matches the slug - first try exact match
+    // Find the blog post that matches the slug
+    // First try exact match
     let foundPost = blogPosts.find((post) => post.slug === slug);
     
     // If not found, check if the slug might be the title slugified from search results
-    if (!foundPost) {
-      // More extensive matching logic
-      foundPost = blogPosts.find((post) => {
-        // Normalize both strings for comparison
-        const normalizedSlug = slug.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-        const normalizedPostSlug = post.slug.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-        const normalizedTitle = post.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-        
-        // Try multiple matching strategies
-        return normalizedPostSlug === normalizedSlug || 
-               normalizedPostSlug.includes(normalizedSlug) ||
-               normalizedTitle.includes(normalizedSlug) ||
-               normalizedSlug.includes(normalizedPostSlug);
-      });
+    if (!foundPost && slug) {
+      foundPost = blogPosts.find((post) => 
+        post.title.toLowerCase().replace(/\s+/g, '-').includes(slug.toLowerCase())
+      );
     }
 
-    // Simulate API delay (would be a real API call in production)
-    const timer = setTimeout(() => {
+    // Simulate API delay
+    setTimeout(() => {
       if (foundPost) {
         setPost(foundPost);
         setNotFoundShown(false);
@@ -176,10 +155,7 @@ const BlogPost = () => {
       }
       setLoading(false);
     }, 300);
-    
-    // Clean up timeout on component unmount or slug change
-    return () => clearTimeout(timer);
-  }, [slug, notFoundShown]);
+  }, [slug]);
 
   if (loading) {
     return (
