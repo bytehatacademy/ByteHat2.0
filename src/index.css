@@ -24,7 +24,7 @@
 }
 
 html.light .nav-blur {
-  @apply bg-white/70 backdrop-blur-lg;
+  @apply bg-white/90 backdrop-blur-lg shadow-sm;
 }
 
 .btn-primary {
@@ -40,7 +40,7 @@ html.light .nav-blur {
 }
 
 html.light .card {
-  @apply bg-white p-6 rounded-xl border border-gray-200 hover:border-teal-500 transition-all duration-300 text-gray-800;
+  @apply bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:border-teal-500 hover:shadow-md transition-all duration-300 text-gray-800;
 }
 
 .section-padding {
@@ -49,11 +49,11 @@ html.light .card {
 
 /* Light Mode Overrides */
 html.light {
-  @apply text-gray-800;
+  @apply text-gray-800 bg-gray-50;
 }
 
 html.light div.bg-gray-900 {
-  @apply bg-gray-100;
+  @apply bg-gray-50;
 }
 
 html.light div.text-gray-400,
@@ -82,4 +82,42 @@ html.light nav {
 html.light a.text-gray-300,
 html.light button.text-gray-300 {
   @apply text-gray-700 hover:text-teal-600;
+}
+
+/* Light mode search bar */
+html.light input.bg-gray-800.text-white {
+  @apply bg-white text-gray-800 border border-gray-300;
+}
+
+html.light .bg-gray-800.border-gray-700 {
+  @apply bg-white border-gray-200;
+}
+
+html.light .bg-gray-700 {
+  @apply bg-gray-100;
+}
+
+html.light .text-white {
+  @apply text-gray-800;
+}
+
+html.light footer.bg-gray-900 {
+  @apply bg-gray-100 text-gray-800;
+}
+
+html.light footer .text-white {
+  @apply text-gray-800;
+}
+
+html.light footer a.text-gray-400:hover {
+  @apply text-teal-600;
+}
+
+/* Better contrast for buttons in light mode */
+html.light .btn-primary {
+  @apply bg-teal-600 hover:bg-teal-700;
+}
+
+html.light .btn-secondary {
+  @apply border-teal-600 text-teal-600 hover:bg-teal-600;
 }

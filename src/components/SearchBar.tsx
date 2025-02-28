@@ -82,7 +82,19 @@ const SearchBar: React.FC<SearchBarProps> = ({ onItemClick }) => {
   };
 
   const handleItemClick = (url: string) => {
-    navigate(url);
+    // Parse URL to determine if it's a course or blog post
+    if (url.startsWith('/courses#')) {
+      // For courses, navigate to courses page and trigger the corresponding modal
+      const courseId = url.split('#')[1];
+      navigate('/courses', { state: { openCourse: courseId } });
+    } else if (url.startsWith('/blog/')) {
+      // For blog posts, navigate to the specific blog post
+      navigate(url);
+    } else {
+      // Default navigation
+      navigate(url);
+    }
+    
     setQuery('');
     setIsOpen(false);
     if (onItemClick) {

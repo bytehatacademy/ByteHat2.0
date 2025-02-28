@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Shield, Cloud, Code, Terminal, Brain, Lock } from 'lucide-react';
 import CourseModal from '../components/CourseModal';
+import { useLocation } from 'react-router-dom';
 
 interface Course {
   icon: JSX.Element;
@@ -72,6 +73,20 @@ const courses: Course[] = [
 
 const Courses = () => {
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+  const location = useLocation();
+  
+  // Handle course opening from search results
+  useEffect(() => {
+    if (location.state?.openCourse) {
+      const courseId = location.state.openCourse;
+      const foundCourse = courses.find(course => 
+        course.title.toLowerCase().replace(/\s+/g, '-') === courseId);
+      
+      if (foundCourse) {
+        setSelectedCourse(foundCourse);
+      }
+    }
+  }, [location.state]);
 
   return (
     <>

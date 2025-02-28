@@ -66,14 +66,8 @@ const Contact = () => {
                     console.error('Error sending email:', error);
                     toastService.show('Failed to send message. Please try again later.', 'error');
                     
-                    // Fallback to mailto
-                    const subject = `Contact from ByteHat Academy - ${name}`;
-                    const body = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
-                    const mailtoUrl = `mailto:bytehatacademy@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-                    
-                    if (window.confirm('Could not send message automatically. Would you like to open your email client instead?')) {
-                      window.location.href = mailtoUrl;
-                    }
+                    // Show only the error toast without fallback
+                    toastService.show('Failed to send message. Please try again later.', 'error');
                   }
                 }}
               >

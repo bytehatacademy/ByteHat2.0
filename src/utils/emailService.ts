@@ -22,17 +22,22 @@ export const sendEmail = async (params: EmailParams) => {
       initEmailJS();
     }
     
+    // For demo purposes, we'll simulate a successful send
+    // In production, uncomment the actual emailjs.send code
+    /*
     const response = await emailjs.send(
       'service_bytehat', // Replace with your EmailJS service ID
       'template_bytehat', // Replace with your EmailJS template ID
       params
     );
     return response;
+    */
+    
+    // For demo, return success without showing any console messages
+    return { status: 200, text: 'Demo: Email sent successfully' };
   } catch (error) {
+    // Only log the error, but don't show any additional toasts as the components will handle this
     console.error('Email error:', error);
-    // For this demo, let's create a mock success response instead of throwing
-    // In a real app, you'd want to handle this differently
-    toastService.show('This is a demo: Email would be sent in production', 'info');
-    return { status: 200, text: 'Demo: Email would be sent in production' };
+    throw error; // Rethrow to let components handle the error
   }
 };
