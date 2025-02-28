@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/Navbar';
@@ -10,9 +11,15 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Search from './pages/Search';
 import NotFound from './pages/NotFound';
+import { initEmailJS } from './utils/emailService';
 import './App.css';
 
 function App() {
+  useEffect(() => {
+    // Initialize EmailJS when the app loads
+    initEmailJS();
+  }, []);
+
   return (
     <HelmetProvider>
       <Router>

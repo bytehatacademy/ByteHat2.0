@@ -34,7 +34,7 @@ const Contact = () => {
               <h2 className="text-2xl font-bold mb-6">Send us a message</h2>
               <form 
                 className="space-y-6"
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                   e.preventDefault();
                   const formData = new FormData(e.currentTarget);
                   const name = formData.get('name') as string;
@@ -43,7 +43,7 @@ const Contact = () => {
 
                   // Basic validation
                   if (!name || !email || !message) {
-                    alert('Please fill in all fields');
+                    toastService.show('Please fill in all fields', 'warning');
                     return;
                   }
 

@@ -10,7 +10,7 @@ interface EmailParams {
 
 // Initialize EmailJS - you should call this once when your app starts
 export const initEmailJS = () => {
-  emailjs.init('YOUR_PUBLIC_KEY'); // Replace with your actual public key
+  emailjs.init('IJWEL3vLnHzrOlkZF'); // Replace with your actual public key if different
 };
 
 export const sendEmail = async (params: EmailParams) => {
