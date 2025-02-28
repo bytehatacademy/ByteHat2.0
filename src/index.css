@@ -4,139 +4,261 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  html {
-    font-family: 'Montserrat', sans-serif;
-  }
-  
-  html.dark {
-    color-scheme: dark;
-  }
-  
-  html.light {
-    color-scheme: light;
-  }
+/**
+ * Core styles and theme variables
+ */
+:root {
+  --color-accent: #4f46e5;
+  --color-accent-hover: #4338ca;
+  --color-primary: #1f2937;
+  --color-secondary: #f9fafb;
 }
 
-/* Dark Mode (Default) */
-.nav-blur {
-  @apply bg-gray-900/70 backdrop-blur-lg;
+/**
+ * Light theme variables
+ */
+.light {
+  --color-text: #1f2937;
+  --color-text-secondary: #4b5563;
+  --color-bg: #f9fafb;
+  --color-card: #ffffff;
+  --color-card-hover: #f3f4f6;
+  --color-navbar: rgba(255, 255, 255, 0.9);
+  --color-navbar-shadow: rgba(0, 0, 0, 0.05);
+  --color-input-bg: #f3f4f6;
+  --color-input-text: #1f2937;
+  --color-input-placeholder: #9ca3af;
+  --color-input-border: #e5e7eb;
+  --color-button-secondary: #e5e7eb;
+  --color-button-secondary-hover: #d1d5db;
+  --color-footer-bg: #f3f4f6;
+  --color-footer-text: #4b5563;
 }
 
-html.light .nav-blur {
-  @apply bg-white/90 backdrop-blur-lg shadow-sm;
+/**
+ * Dark theme variables
+ */
+.dark {
+  --color-text: #f9fafb;
+  --color-text-secondary: #d1d5db;
+  --color-bg: #111827;
+  --color-card: #1f2937;
+  --color-card-hover: #374151;
+  --color-navbar: rgba(31, 41, 55, 0.95);
+  --color-navbar-shadow: rgba(0, 0, 0, 0.3);
+  --color-input-bg: #374151;
+  --color-input-text: #f9fafb;
+  --color-input-placeholder: #9ca3af;
+  --color-input-border: #4b5563;
+  --color-button-secondary: #4b5563;
+  --color-button-secondary-hover: #6b7280;
+  --color-footer-bg: #1f2937;
+  --color-footer-text: #d1d5db;
 }
 
-.btn-primary {
-  @apply bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300;
+/**
+ * Global styles
+ */
+body {
+  @apply bg-gray-900 text-white transition-colors duration-300;
+  font-family: 'Inter', sans-serif;
 }
 
-.btn-secondary {
-  @apply border-2 border-teal-500 text-teal-500 hover:bg-teal-500 hover:text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300;
+/**
+ * Light mode overrides
+ */
+.light body {
+  @apply bg-gray-50 text-gray-900;
 }
 
-.card {
-  @apply bg-gray-800 p-6 rounded-xl border border-gray-700 hover:border-teal-500 transition-all duration-300;
-}
-
-html.light .card {
-  @apply bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:border-teal-500 hover:shadow-md transition-all duration-300 text-gray-800;
-}
-
-.section-padding {
-  @apply py-16 md:py-24;
-}
-
-/* Light Mode Overrides */
-html.light {
-  @apply text-gray-800 bg-gray-50;
-}
-
-html.light div.bg-gray-900 {
+.light .bg-gray-900 {
   @apply bg-gray-50;
 }
 
-html.light h1.text-4xl,
-html.light h1.text-5xl {
-  @apply text-gray-900;
+.light .bg-gray-800 {
+  @apply bg-white shadow-sm;
 }
 
-html.light div.text-gray-400,
-html.light p.text-gray-400,
-html.light span.text-gray-400 {
-  @apply text-gray-600;
-}
-
-html.light div.text-gray-300,
-html.light p.text-gray-300,
-html.light span.text-gray-300 {
-  @apply text-gray-700;
-}
-
-html.light div.bg-gray-800,
-html.light input.bg-gray-800, 
-html.light textarea.bg-gray-800 {
-  @apply bg-white border-gray-300;
-}
-
-html.light header,
-html.light nav {
-  @apply text-gray-800;
-}
-
-html.light header.nav-blur {
-  @apply shadow-md;
-}
-
-html.light a.text-gray-300,
-html.light button.text-gray-300 {
-  @apply text-gray-700 hover:text-teal-600;
-}
-
-/* Enhanced light mode styling for specific sections */
-html.light section h2.text-3xl,
-html.light section h2.text-4xl {
-  @apply text-gray-900;
-}
-
-html.light section p.text-xl {
-  @apply text-gray-700;
-}
-
-/* Light mode search bar */
-html.light input.bg-gray-800.text-white {
-  @apply bg-white text-gray-800 border border-gray-300;
-}
-
-html.light .bg-gray-800.border-gray-700 {
-  @apply bg-white border-gray-200;
-}
-
-html.light .bg-gray-700 {
+.light .bg-gray-700 {
   @apply bg-gray-100;
 }
 
-html.light .text-white {
-  @apply text-gray-800;
+.light .text-white {
+  @apply text-gray-900;
 }
 
-html.light footer.bg-gray-900 {
+.light .text-gray-400 {
+  @apply text-gray-500;
+}
+
+.light .text-gray-300 {
+  @apply text-gray-600;
+}
+
+.light .border-gray-700 {
+  @apply border-gray-200;
+}
+
+.light .border-gray-800 {
+  @apply border-gray-300;
+}
+
+/**
+ * Component styles with theme support
+ */
+.card {
+  @apply bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300;
+}
+
+.light .card {
+  @apply bg-white shadow-sm hover:shadow-md;
+}
+
+.btn-primary {
+  @apply bg-accent hover:bg-accent/80 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-300 disabled:opacity-70 disabled:cursor-not-allowed;
+}
+
+.btn-secondary {
+  @apply bg-gray-700 hover:bg-gray-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-300 disabled:opacity-70 disabled:cursor-not-allowed;
+}
+
+.light .btn-secondary {
+  @apply bg-gray-200 hover:bg-gray-300 text-gray-800;
+}
+
+.btn-outline {
+  @apply border border-accent text-accent hover:bg-accent hover:text-white px-6 py-2 rounded-lg font-medium transition-colors duration-300 disabled:opacity-70 disabled:cursor-not-allowed;
+}
+
+/**
+ * Prose styles for blog content
+ */
+.prose h2 {
+  @apply text-2xl font-bold mt-6 mb-4;
+}
+
+.prose h3 {
+  @apply text-xl font-bold mt-5 mb-3;
+}
+
+.prose p {
+  @apply mb-4 text-gray-300;
+}
+
+.light .prose p {
+  @apply text-gray-700;
+}
+
+.prose ul {
+  @apply list-disc pl-5 mb-4 text-gray-300;
+}
+
+.light .prose ul {
+  @apply text-gray-700;
+}
+
+.prose ol {
+  @apply list-decimal pl-5 mb-4 text-gray-300;
+}
+
+.light .prose ol {
+  @apply text-gray-700;
+}
+
+.prose a {
+  @apply text-accent hover:text-accent/80 transition-colors;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-accent pl-4 italic my-4 text-gray-300;
+}
+
+.light .prose blockquote {
+  @apply text-gray-700;
+}
+
+.prose code {
+  @apply bg-gray-700 px-1 py-0.5 rounded text-sm font-mono;
+}
+
+.light .prose code {
   @apply bg-gray-100 text-gray-800;
 }
 
-html.light footer .text-white {
-  @apply text-gray-800;
+.prose pre {
+  @apply bg-gray-700 p-4 rounded-lg overflow-auto my-4;
 }
 
-html.light footer a.text-gray-400:hover {
-  @apply text-teal-600;
+.light .prose pre {
+  @apply bg-gray-100;
 }
 
-/* Better contrast for buttons in light mode */
-html.light .btn-primary {
-  @apply bg-teal-600 hover:bg-teal-700;
+/**
+ * Form elements with theme support
+ */
+.light input[type="text"],
+.light input[type="email"],
+.light input[type="search"],
+.light textarea {
+  @apply bg-gray-100 text-gray-900 border border-gray-200;
 }
 
-html.light .btn-secondary {
-  @apply border-teal-600 text-teal-600 hover:bg-teal-600;
+.light input::placeholder,
+.light textarea::placeholder {
+  @apply text-gray-500;
+}
+
+/**
+ * Navbar specific light theme
+ */
+.light .navbar {
+  @apply bg-white bg-opacity-90 shadow-md backdrop-blur-md text-gray-900;
+}
+
+/**
+ * Footer light theme
+ */
+.light footer.bg-gray-900 {
+  @apply bg-gray-100 text-gray-800;
+}
+
+/**
+ * Animations and transitions
+ */
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-in-out;
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/**
+ * Accessibility improvements
+ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }

@@ -3,12 +3,34 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Search, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * Props for the SearchBar component
+ * @interface SearchBarProps
+ */
 interface SearchBarProps {
+  /** Optional callback function when a search result is clicked */
   onItemClick?: () => void;
 }
 
-// Mock data structure - you would normally fetch this from an API
-const mockSearchData = {
+/**
+ * Search result item structure
+ * @interface SearchItem
+ */
+interface SearchItem {
+  /** Display title of the search result */
+  title: string;
+  /** URL to navigate to when clicked */
+  url: string;
+}
+
+/**
+ * Mock data structure for search results
+ * In production, this would be fetched from an API
+ */
+const mockSearchData: {
+  courses: SearchItem[];
+  blogs: SearchItem[];
+} = {
   courses: [
     { title: 'Ethical Hacking', url: '/courses#ethical-hacking' },
     { title: 'Defensive Security/SOC', url: '/courses#defensive-security' },
@@ -16,10 +38,10 @@ const mockSearchData = {
     { title: 'DevSecOps', url: '/courses#devsecops' },
   ],
   blogs: [
-    { title: 'Top 5 Cloud Security Tips for 2025', url: '/blog/cloud-security-tips' },
-    { title: 'Why Learn Ethical Hacking in 2025', url: '/blog/ethical-hacking' },
-    { title: 'DevSecOps: The Future of Secure Development', url: '/blog/devsecops-future' },
-    { title: 'AI in Cybersecurity: Trends to Watch', url: '/blog/ai-cybersecurity-trends' },
+    { title: 'Top 5 Cloud Security Tips for 2025', url: '/blog/top-5-cloud-security-tips-for-2025' },
+    { title: 'Why Learn Ethical Hacking in 2025', url: '/blog/why-learn-ethical-hacking-in-2025' },
+    { title: 'DevSecOps: The Future of Secure Development', url: '/blog/devsecops-the-future-of-secure-development' },
+    { title: 'AI in Cybersecurity: Trends to Watch', url: '/blog/ai-in-cybersecurity-trends-to-watch' },
   ],
 };
 
@@ -73,33 +95,59 @@ const SearchBar: React.FC<SearchBarProps> = ({ onItemClick }) => {
     return () => clearTimeout(timer);
   }, [query]);
 
-  const handleSearch = (e: React.FormEvent) => {
+  /**
+   * Handles form submission for search
+   * @param {React.FormEvent} e - Form event
+   */
+  const handleSearch = (e: React.FormEvent): void => {
     e.preventDefault();
-    if (query.trim()) {
-      navigate(`/search?q=${encodeURIComponent(query)}`);
+    
+    // Validate and sanitize the query
+    const sanitizedQuery = query.trim();
+    if (sanitizedQuery) {
+      // Use encodeURIComponent to safely include the query in the URL
+      navigate(`/search?q=${encodeURIComponent(sanitizedQuery)}`);
       setIsOpen(false);
     }
   };
 
-  const handleItemClick = (url: string) => {
+  /**
+   * Handles click on a search result item
+   * @param {string} url - URL to navigate to
+   */
+  const handleItemClick = (url: string): void => {
+    // Validate URL for security
+    if (!url || typeof url !== 'string') {
+      console.error('Invalid URL provided to handleItemClick');
+      return;
+    }
+    
     // Parse URL to determine if it's a course or blog post
     if (url.startsWith('/courses#')) {
       // For courses, navigate to courses page and trigger the corresponding modal
       const courseId = url.split('#')[1];
-      navigate('/courses', { state: { openCourse: courseId } });
+      if (courseId) {
+        navigate('/courses', { state: { openCourse: courseId } });
+      } else {
+        navigate('/courses');
+      }
     } else if (url.startsWith('/blog/')) {
       // For blog posts, navigate to the specific blog post
       // Ensure we reset the query and close dropdown before navigation
       setQuery('');
       setIsOpen(false);
       
-      // Wait a tiny bit to ensure state updates happen before navigation
-      setTimeout(() => {
+      // Use requestAnimationFrame instead of setTimeout for better browser compatibility
+      requestAnimationFrame(() => {
         navigate(url);
-      }, 10);
+      });
     } else {
-      // Default navigation
-      navigate(url);
+      // Default navigation with validation
+      if (url.startsWith('/')) {
+        navigate(url);
+      } else {
+        console.error('Attempted to navigate to invalid URL:', url);
+      }
     }
     
     setQuery('');
@@ -117,23 +165,29 @@ const SearchBar: React.FC<SearchBarProps> = ({ onItemClick }) => {
 
   return (
     <div ref={wrapperRef} className="relative w-full max-w-md">
-      <form onSubmit={handleSearch} className="relative">
+      <form onSubmit={handleSearch} className="relative" role="search">
         <div className="relative">
+          <label htmlFor="site-search" className="sr-only">Search courses and blogs</label>
           <input
-            type="text"
+            id="site-search"
+            type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search courses, blogs..."
             className="w-full bg-gray-800 text-white pl-10 pr-10 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+            aria-label="Search through site content"
+            autoComplete="off"
+            maxLength={100}
           />
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" aria-hidden="true" />
           {query && (
             <button
               type="button"
               onClick={clearSearch}
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+              aria-label="Clear search"
             >
-              <X className="h-5 w-5" />
+              <X className="h-5 w-5" aria-hidden="true" />
             </button>
           )}
         </div>
